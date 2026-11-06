@@ -1,0 +1,30 @@
+{
+  "status": "candidate_design_not_governed_SB",
+  "source_baseline": "SBPKG__FrontierDistribution_2026-11-06_1409-0500.zip",
+  "assumptions": [
+    {
+      "local_id": "ST1-H01",
+      "claim": "Supplier ERP webstore and warehouse identifiers may differ",
+      "confidence": "high likelihood",
+      "verification": "unverified",
+      "design_requirement": "Explicit scoped identity translation"
+    },
+    {
+      "local_id": "ST1-H02",
+      "claim": "A canonical ProductId is useful inside this reference model",
+      "classification": "design decision",
+      "verification": "not a Frontier fact"
+    },
+    {
+      "local_id": "ST1-H03",
+      "claim": "Supplier item numbers are unique only within supplier context",
+      "classification": "design assumption",
+      "verification": "unverified"
+    }
+  ],
+  "open_dependencies": [
+    "Q24 inventory reservation authority remains unresolved",
+    "H08 physical SQL Server assumptions not promoted to verified facts"
+  ],
+  "sb_action": "Candidate design only; steward review before SB artifact promotion"
+}
