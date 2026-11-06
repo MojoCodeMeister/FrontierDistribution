@@ -22,7 +22,12 @@ erDiagram
 ## Logical modeling decisions
 - A product has a model-local canonical `ProductId`; this is NOT asserted as Frontier's data architecture.
 - External identifiers are scoped by `System` + `IdentifierType` + optional `Context`, never globally by SKU alone.
-- Source ambiguity is represented explicitly instead of selecting an arbitrary match.
+- A fully scoped `ProductIdentity` (`System`, `IdentifierType`, `ExternalId`, `Context`) must occur at most once in the identity catalog. `Context = null` is a distinct scope; comparisons are case-insensitive. Omitting context from a query can intentionally produce an ambiguous result.
+- Source ambiguity is represented explicitly instead of selecting an arbitrary match. A collision within the *same full scope* is invalid catalog data, not a legitimate ambiguous lookup.
+- `ProductIdentity` and `SupplierProduct` use logical composite identity candidates, not database constraints; physical keys remain undecided.
+- `SupplierProduct` may require a purchase-configuration discriminator if a supplier can offer multiple packages or purchase units for the same product. Do not impose `(SupplierId, ProductId)` uniqueness without evidence.
+- `InventoryPosition` is keyed logically by `(WarehouseId, ProductId)` in the current relationship-only model; it does not represent balance, allocation, or reservation.
+- Invalid lookup inputs raise argument errors; valid unmatched inputs return `NotFound`. A resolver constructed from a validated catalog uses a snapshot so later catalog mutations do not change its behavior.
 - SupplierProduct models supplier-specific SKU and unit conversion; receiving and costing remain out of scope.
 - InventoryPosition denotes a relationship only, without quantities or ownership decisions (Q24 remains unresolved).
 - Identity validity dates and versioning are deferred pending evidence of required lifecycle semantics.
@@ -34,3 +39,4 @@ erDiagram
 3. Is the ERP's item ID distinct from nopCommerce's product ID and SKU?
 4. Does warehouse execution use separate item reference codes?
 5. What is the system of record for the product catalog and cross references?
+6. Can a supplier offer multiple purchase configurations for the same canonical product? If so, what identifies each supplier catalog entry?

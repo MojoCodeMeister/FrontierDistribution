@@ -47,6 +47,14 @@ public sealed class IdentityCatalog
             if (string.IsNullOrWhiteSpace(x.System) || string.IsNullOrWhiteSpace(x.IdentifierType) || string.IsNullOrWhiteSpace(x.ExternalId))
                 errors.Add("Blank identity namespace/type/value");
         }
+        // An external identity is unique only within its complete scope. The same
+        // identifier without supplied context may legitimately be ambiguous.
+        foreach (var group in ProductIdentities.GroupBy(
+            x => (x.System, x.IdentifierType, x.ExternalId, x.Context),
+            ProductIdentityScopeComparer.Instance).Where(g => g.Count() > 1))
+        {
+            errors.Add($"Duplicate scoped product identity: {group.Key.System}/{group.Key.IdentifierType}/{group.Key.ExternalId} (context: {group.Key.Context ?? "<none>"})");
+        }
         foreach (var x in SupplierProducts)
         {
             if (!products.Contains(x.ProductId) || !suppliers.Contains(x.SupplierId)) errors.Add($"Orphan supplier product {x.SupplierId}/{x.ProductId}");
@@ -58,5 +66,31 @@ public sealed class IdentityCatalog
             if (!warehouses.Contains(x.WarehouseId) || !products.Contains(x.ProductId)) errors.Add($"Orphan inventory position {x.WarehouseId}/{x.ProductId}");
         Unique(InventoryPositions.Select(x => $"{x.WarehouseId}|{x.ProductId}"), "inventory position", errors);
         return errors;
+    }
+}
+
+// Scope is compared case-insensitively, matching resolver lookup semantics.
+// Null context is distinct from an explicitly supplied context.
+internal sealed class ProductIdentityScopeComparer : IEqualityComparer<(string System, string IdentifierType, string ExternalId, string? Context)>
+{
+    public static ProductIdentityScopeComparer Instance { get; } = new();
+    private static readonly StringComparer Comparer = StringComparer.OrdinalIgnoreCase;
+
+    public bool Equals(
+        (string System, string IdentifierType, string ExternalId, string? Context) x,
+        (string System, string IdentifierType, string ExternalId, string? Context) y) =>
+        Comparer.Equals(x.System, y.System) &&
+        Comparer.Equals(x.IdentifierType, y.IdentifierType) &&
+        Comparer.Equals(x.ExternalId, y.ExternalId) &&
+        Comparer.Equals(x.Context, y.Context);
+
+    public int GetHashCode((string System, string IdentifierType, string ExternalId, string? Context) value)
+    {
+        var hash = new HashCode();
+        hash.Add(value.System, Comparer);
+        hash.Add(value.IdentifierType, Comparer);
+        hash.Add(value.ExternalId, Comparer);
+        hash.Add(value.Context, Comparer);
+        return hash.ToHashCode();
     }
 }
