@@ -1,0 +1,10 @@
+{
+  "SourceSystem": "nopCommerce",
+  "ExternalOrderId": "WEB-10001",
+  "CustomerId": "C0001",
+  "ShipToLocationId": "LOC-01",
+  "Lines": [
+    { "SourceLineId": "1", "Sku": "FD-DOG-0142", "Quantity": 3 },
+    { "SourceLineId": "2", "Sku": "FD-DOG-0143", "Quantity": 2 }
+  ]
+}

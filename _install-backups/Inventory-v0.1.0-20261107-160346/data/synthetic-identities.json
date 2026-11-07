@@ -1,0 +1,130 @@
+﻿{
+    "Products":  [
+                     {
+                         "ProductId":  "P000142",
+                         "Description":  "Synthetic dog food 15 lb",
+                         "BaseUnit":  "Each"
+                     },
+                     {
+                         "ProductId":  "P000143",
+                         "Description":  "Synthetic dog food 30 lb",
+                         "BaseUnit":  "Each"
+                     }
+                 ],
+    "Suppliers":  [
+                      {
+                          "SupplierId":  "SUP-1",
+                          "Name":  "Synthetic supplier A"
+                      },
+                      {
+                          "SupplierId":  "SUP-2",
+                          "Name":  "Synthetic supplier B"
+                      }
+                  ],
+    "SupplierProducts":  [
+                             {
+                                 "SupplierId":  "SUP-1",
+                                 "ProductId":  "P000142",
+                                 "SupplierItemNumber":  "SHARED-01",
+                                 "PurchaseUnit":  "Case",
+                                 "BaseUnitsPerPurchaseUnit":  4
+                             },
+                             {
+                                 "SupplierId":  "SUP-2",
+                                 "ProductId":  "P000142",
+                                 "SupplierItemNumber":  "SP-142",
+                                 "PurchaseUnit":  "Each",
+                                 "BaseUnitsPerPurchaseUnit":  1
+                             },
+                             {
+                                 "SupplierId":  "SUP-2",
+                                 "ProductId":  "P000143",
+                                 "SupplierItemNumber":  "SHARED-01",
+                                 "PurchaseUnit":  "Case",
+                                 "BaseUnitsPerPurchaseUnit":  2
+                             }
+                         ],
+    "ProductIdentities":  [
+                              {
+                                  "ProductId":  "P000142",
+                                  "System":  "ERP",
+                                  "IdentifierType":  "ItemNumber",
+                                  "ExternalId":  "ITEM-000142"
+                              },
+                              {
+                                  "ProductId":  "P000142",
+                                  "System":  "nopCommerce",
+                                  "IdentifierType":  "SKU",
+                                  "ExternalId":  "FD-DOG-0142"
+                              },
+                              {
+                                  "ProductId":  "P000142",
+                                  "System":  "Warehouse",
+                                  "IdentifierType":  "ItemRef",
+                                  "ExternalId":  "WH-0142"
+                              },
+                              {
+                                  "ProductId":  "P000142",
+                                  "System":  "Supplier",
+                                  "IdentifierType":  "ItemNumber",
+                                  "ExternalId":  "SHARED-01",
+                                  "Context":  "SUP-1"
+                              },
+                              {
+                                  "ProductId":  "P000142",
+                                  "System":  "Supplier",
+                                  "IdentifierType":  "ItemNumber",
+                                  "ExternalId":  "SP-142",
+                                  "Context":  "SUP-2"
+                              },
+                              {
+                                  "ProductId":  "P000143",
+                                  "System":  "ERP",
+                                  "IdentifierType":  "ItemNumber",
+                                  "ExternalId":  "ITEM-000143"
+                              },
+                              {
+                                  "ProductId":  "P000143",
+                                  "System":  "Supplier",
+                                  "IdentifierType":  "ItemNumber",
+                                  "ExternalId":  "SHARED-01",
+                                  "Context":  "SUP-2"
+                              },
+                              {
+                                  "ProductId":  "P000143",
+                                  "System":  "nopCommerce",
+                                  "IdentifierType":  "SKU",
+                                  "ExternalId":  "FD-DOG-0143"
+                              }
+                          ],
+    "Customers":  [
+                      {
+                          "CustomerId":  "C0001",
+                          "Name":  "Synthetic pet retailer"
+                      }
+                  ],
+    "CustomerLocations":  [
+                              {
+                                  "LocationId":  "LOC-01",
+                                  "CustomerId":  "C0001",
+                                  "Label":  "Retail store"
+                              },
+                              {
+                                  "LocationId":  "LOC-02",
+                                  "CustomerId":  "C0001",
+                                  "Label":  "Secondary receiving"
+                              }
+                          ],
+    "Warehouses":  [
+                       {
+                           "WarehouseId":  "WH-01",
+                           "Name":  "Synthetic distribution warehouse"
+                       }
+                   ],
+    "InventoryPositions":  [
+                               {
+                                   "WarehouseId":  "WH-01",
+                                   "ProductId":  "P000142"
+                               }
+                           ]
+}

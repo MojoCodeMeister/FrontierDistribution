@@ -1,0 +1,491 @@
+{
+  "artifact_type": "FRAG",
+  "artifact_id": "f05b73f1-c1e9-4077-85c7-15add4684898",
+  "frag_type": "concept",
+  "domain": "Frontier",
+  "lane": "$_ProjectBrain/60_COMM",
+  "title": "Assumption sets and executable scenarios",
+  "artifact_version": "0.4.0",
+  "status": "draft",
+  "active": false,
+  "created_utc": "2026-11-06T17:53:08Z",
+  "as_of_date": "2026-11-07",
+  "consumer": "Human Orchestrator / The Team",
+  "author": "Mark J. Lynn (source thoughts); ChatGPT / Chet (capture)",
+  "recommended_filename": "FRAG-Frontier-Assumption-Sets-And-Executable-Scenarios_2026-11-07_v0.4.0.json",
+  "recommended_storage_path": "S:\\Brain-FrontierDistribution\\$_ProjectBrain\\60_COMM",
+  "steward_authorization": "User requested CUB after stating simplicity/clarity/expedience direction, then authorized proposed update with \"Proceed\" (2026-11-07); existing authorization history is retained in source artifact and revision history.",
+  "content": {
+    "steward_source_quotes": [
+      {
+        "id": "U01",
+        "speaker": "Mark J. Lynn",
+        "source": "Frontier project conversation",
+        "message_index": 192,
+        "message_timestamp_utc": null,
+        "verbatim_text": "Without assumptions, making progress is difficult",
+        "sha256_utf8": "4fd681c0b2773f52a48a170904826824eacbd12e9e733f6359ee0da68185f90d"
+      },
+      {
+        "id": "U02",
+        "speaker": "Mark J. Lynn",
+        "source": "Frontier project conversation",
+        "message_index": 194,
+        "message_timestamp_utc": null,
+        "verbatim_text": "I think each assumption should be a set, with three (3) different scenarios",
+        "sha256_utf8": "aafcecabe2978bcfdf5d03ba26428a757eacd369b06a5cb2cf5b78aaffb1d91d"
+      },
+      {
+        "id": "U03",
+        "speaker": "Mark J. Lynn",
+        "source": "Frontier project conversation",
+        "message_index": 196,
+        "message_timestamp_utc": null,
+        "verbatim_text": "I think assumption might be a good candidate for it's own object type for SB - ??",
+        "sha256_utf8": "0ee5aaebeeba17c37c463bc3753588e5942968d972986928451bea2593b56296"
+      },
+      {
+        "id": "U04",
+        "speaker": "Mark J. Lynn",
+        "source": "Frontier project conversation",
+        "message_index": 199,
+        "message_timestamp_utc": null,
+        "verbatim_text": "In c:\\projects\\$FrontierDistribution, we can build an optimal system.  It's a \"how would I do this\" solution.  A scenario in one might be considered an instance.",
+        "sha256_utf8": "3ff6ecd9135755780edfdb52be3c0d7e245a0c0341c9cd3b767c24a434d4207a"
+      },
+      {
+        "id": "U05",
+        "speaker": "Mark J. Lynn",
+        "source": "Frontier project conversation",
+        "message_index": 201,
+        "message_timestamp_utc": null,
+        "verbatim_text": "These can be swapped in and out.  In C#, I'd use Dependency Injection (DI)\nEach component can have it's own DB or Schema,  At least as a scenario->reasonable chance it exists that way at Frontier.\nI have high confidence you could craft real good supporting database solution.\nDummy up products, users, .... Lots of test data.\nIf we got something list this built out (<- had to remember that term), it would be awesome, ... no AWESOME in an interview.  Really no better way for me to learn and get an understanding.\nIf they were to ask if I had every \"done a system\" like this before, my answer could be Yes - Yours.",
+        "sha256_utf8": "90da8aa5d23593646817e2e3759b13d6aa5f6314b11915cfc0e44719ff182a38"
+      },
+      {
+        "id": "U06",
+        "speaker": "Mark J. Lynn",
+        "source": "Frontier project conversation",
+        "message_index": 203,
+        "message_timestamp_utc": null,
+        "verbatim_text": "I'm not sure what you were going to go off and produce.\n\nFirst is to have you review that thought stream.  It was a stream.\nAfter, well CUB\nAfter after, begin the solution with deliberation.  I'd like to incorporate this in the HTML.  That thing might \"grow legs\".",
+        "sha256_utf8": "02b1e00e6b91842832c94d91326a6e60a03fe41dd7e26876356db791da1bb22a"
+      },
+      {
+        "id": "U07",
+        "speaker": "Mark J. Lynn",
+        "source": "Frontier project conversation",
+        "message_index": 205,
+        "message_timestamp_utc": null,
+        "verbatim_text": "With a built system.  \"What ifs\" can be identified, resolved.",
+        "sha256_utf8": "23db9db6b1dd119624b29d73fe64be5c8f92712efdc1e5820d12c494d2c5f72f"
+      },
+      {
+        "id": "U08",
+        "speaker": "Mark J. Lynn",
+        "source": "Frontier project conversation",
+        "message_index": 207,
+        "message_timestamp_utc": null,
+        "verbatim_text": "I cant waste time guessing, I need to do.",
+        "sha256_utf8": "884b2d717b878e9db2f7f8faad6b56c3c095e9eb41d4ebf18af7bd227d80198b"
+      },
+      {
+        "id": "U09",
+        "speaker": "Mark J. Lynn",
+        "source": "Frontier project conversation",
+        "message_index": null,
+        "message_timestamp_utc": null,
+        "verbatim_text": "With VC/SB, I created X in Y amount of time.\nWhere X a concrete \"best guess\" of there system\nAnd Y is how long it took.\n\nBUBBLE that came to mind while you were processing.",
+        "sha256_utf8": "dd097dc312da5bffb51c58e92f4aeca926a5700ac1ca15c57a4968c11ca5c393"
+      },
+      {
+        "id": "U11",
+        "speaker": "Mark J. Lynn",
+        "source": "Frontier project conversation (current thread, 2026-11-06)",
+        "message_index": null,
+        "message_timestamp_utc": null,
+        "verbatim_text": "Actually, this will be a \"working\" model of THEIR systems.  Best guess assumptions to define requirements.",
+        "sha256_utf8": "626624434c1071d6277db06ac684852340059ed53660c4031cb115b8b1064915"
+      },
+      {
+        "id": "U12",
+        "speaker": "Mark J. Lynn",
+        "source": "Frontier project conversation (current thread, 2026-11-06)",
+        "message_index": null,
+        "message_timestamp_utc": null,
+        "verbatim_text": "Also.  that VC/SB->X in Y was over-emphasized.  Just a capture of what I'm doing.  It's an interview goal.  I'm using VC/SB to create X.  Y is noted, and should be relatively low for what being created with high productivity.",
+        "sha256_utf8": "21c29fa160f5b7331db3c8ddc78baeb829b8f683790e97a441d392a82a3f9f9d"
+      },
+      {
+        "id": "U13",
+        "speaker": "Mark J. Lynn",
+        "source": "Frontier project conversation (current thread, 2026-11-06)",
+        "message_index": null,
+        "message_timestamp_utc": null,
+        "verbatim_text": "Chronologically, what likely existed first?  Let's just build everything in order.  Might be able to reproduce some thought process.",
+        "sha256_utf8": "f9c5d6edba503a4710c8a8cf5e9c726785624e7935e11474a1437473076d661f"
+      },
+      {
+        "id": "U14",
+        "speaker": "Mark J. Lynn",
+        "source": "Frontier project conversation (current thread, 2026-11-06)",
+        "message_index": null,
+        "message_timestamp_utc": null,
+        "verbatim_text": "I don't want to re-create everything, just a logical progression through components and interfaces to get to the present.\n\nThe other stuff is actually pretty <something useful>",
+        "sha256_utf8": "0c7b60ecbaf17582777a85bdcdf1d6b26a028a659aee75e9d37c0e2e8a46e0cd"
+      },
+      {
+        "id": "U15",
+        "speaker": "Mark J. Lynn",
+        "source": "Frontier project conversation (current thread, 2026-11-06)",
+        "message_index": null,
+        "message_timestamp_utc": null,
+        "verbatim_text": "Land the job at Frontier.  If this works out well, timing is good, and I get an interview - I've set myself up as best I can.  Tangible output, so is anything but throw-away",
+        "sha256_utf8": "928484edb062b786c203471e2f5f6dd66fd820aca3aa84e97aeb5f8c7215c5c8"
+      },
+      {
+        "id": "U16",
+        "speaker": "Mark J. Lynn",
+        "source": "Frontier project conversation (2026-11-07)",
+        "message_index": null,
+        "message_timestamp_utc": null,
+        "verbatim_text": "Generally speaking.  Should we not focus on simpler, clearer, and expedient to get the job done?",
+        "sha256_utf8": "7c4bb215dacc859dcd30fd01859d9b72826127dc72eaca9872f1c07e9ce75e08"
+      }
+    ],
+    "state": "Draft Frontier concept: build a credible working approximation of Frontier present-day systems to strengthen the Business Application Developer interview opportunity; accumulate reusable work without recreating historical systems. Q24 alternatives remain unresolved.",
+    "assistant_interpretation": {
+      "classification": "Supplementary design interpretation, separate from the steward's words and from Frontier observations.",
+      "purpose": "Primary practical objective: improve the opportunity to secure the Business Application Developer position at Frontier. The tangible work sample is a credible, functioning best-guess model of Frontier present-day systems, supported by explicit assumptions and distinguishable verified evidence. Reusable engineering assets retain value regardless of hiring outcome.",
+      "assumption_set_pilot": {
+        "id": "AS-Q24-InventoryReservation",
+        "candidate_object_kind": "AssumptionSet",
+        "status": "candidate",
+        "question_refs": [
+          {
+            "artifact": "DAT-Frontier-Discovery-Questions_2026-11-05_v0.7.0.json",
+            "record_ids": [
+              "Q24"
+            ]
+          },
+          {
+            "artifact": "DAT-Frontier-nopCommerce-Discovery-Questions_2026-11-04_v0.3.0.json",
+            "record_ids": [
+              "NQ03",
+              "NQ10"
+            ]
+          }
+        ],
+        "unknown": "For one webstore order and one SKU at one warehouse, which system can commit a reservation that reduces available-to-order stock?",
+        "scenarios": [
+          {
+            "id": "AS-Q24-InventoryReservation/S1",
+            "label": "ERP commits reservations",
+            "statement": "The webstore requests a reservation and the ERP is the sole authority that commits it against warehouse availability.",
+            "distinguishing_observation": "A binding reservation appears first in the ERP. The webstore retains its request and the ERP's response or reservation ID."
+          },
+          {
+            "id": "AS-Q24-InventoryReservation/S2",
+            "label": "Webstore commits within a channel allotment",
+            "statement": "The ERP owns warehouse totals and grants a bounded online allotment. The webstore commits reservations against that allotment.",
+            "distinguishing_observation": "The portal can show a binding reservation against its own remaining allotment before the ERP records the handoff. ERP warehouse totals and the portal allotment have separate authorities."
+          },
+          {
+            "id": "AS-Q24-InventoryReservation/S3",
+            "label": "Both systems commit against a shared pool",
+            "statement": "Each system can commit a reservation that reduces the same pool of available-to-order stock. A concurrency or reconciliation rule governs competing writes.",
+            "distinguishing_observation": "Both systems can show binding reservations against the same pool without one acting only as a request client. Trace how competing reservations are serialized or reconciled."
+          }
+        ],
+        "working_selection": null,
+        "selection_rule": "When an option is selected for work, record its scenario ID, rationale, scope, and what would cause a review.",
+        "depends_on": [
+          {
+            "artifact": "FRAG-Frontier-Architecture-Hypotheses_2026-10-26_v0.1.0.json",
+            "record_ids": [
+              "H02"
+            ]
+          },
+          {
+            "artifact": "DAT-Frontier-Working-Systems-Map_2026-11-04_v0.8.0.json",
+            "record_ids": [
+              "E02",
+              "H02"
+            ]
+          }
+        ],
+        "review_if_changed": [
+          "Review the Q24/NQ03 and NQ10 interpretation and the E02 discovery relationship.",
+          "Review configured instances and conclusions that relied on the prior selection."
+        ],
+        "resolution": null,
+        "resolution_rule": "Link verified observations and affected records when evidence resolves the unknown. Revise the set if the observed arrangement falls outside its options."
+      },
+      "independent_dimensions": [
+        {
+          "dimension": "Business authority",
+          "anchor": [
+            {
+              "artifact": "DAT-Frontier-Discovery-Questions_2026-11-05_v0.7.0.json",
+              "record_ids": [
+                "Q24"
+              ]
+            },
+            {
+              "artifact": "DAT-Frontier-nopCommerce-Discovery-Questions_2026-11-04_v0.3.0.json",
+              "record_ids": [
+                "NQ03",
+                "NQ10"
+              ]
+            }
+          ],
+          "focus": "Who can authoritatively change a particular fact or workflow state."
+        },
+        {
+          "dimension": "Propagation",
+          "anchor": [
+            {
+              "artifact": "DAT-Frontier-Discovery-Questions_2026-11-05_v0.7.0.json",
+              "record_ids": [
+                "Q24"
+              ]
+            },
+            {
+              "artifact": "DAT-Frontier-nopCommerce-Discovery-Questions_2026-11-04_v0.3.0.json",
+              "record_ids": [
+                "NQ03"
+              ]
+            }
+          ],
+          "focus": "What moves, direction, timing, transport and reconciliation. Consider replication if discovery establishes batch synchronization and a need it could address."
+        },
+        {
+          "dimension": "Physical placement",
+          "anchor": [
+            {
+              "artifact": "DAT-Frontier-Discovery-Questions_2026-11-05_v0.7.0.json",
+              "record_ids": [
+                "Q23"
+              ]
+            },
+            {
+              "artifact": "DAT-Frontier-nopCommerce-Discovery-Questions_2026-11-04_v0.3.0.json",
+              "record_ids": [
+                "NQ02",
+                "NQ11"
+              ]
+            },
+            {
+              "artifact": "DAT-Frontier-Working-Systems-Map_2026-11-04_v0.8.0.json",
+              "record_ids": [
+                "H08"
+              ]
+            }
+          ],
+          "focus": "Map host and instance placement separately from database and schema boundaries. Components could share a schema, use distinct schemas in one database, or use distinct databases. H08 supplies the existing SQL Server working default."
+        }
+      ],
+      "reference_implementation_concept": {
+        "solution_root": "C:\\Projects\\$FrontierDistribution",
+        "intent": "Build a credible, functioning approximation of Frontier Distributing's present-day system environment using available evidence and explicit best-guess assumptions, organized by logical component and interface dependencies. Independent implementation, not a generic distributor exercise or a staged historical recreation.",
+        "configured_instance": "A named selection of compatible choices across independent dimensions. C# dependency injection is a candidate way to compose the selected implementations.",
+        "synthetic_data": "Use realistic breadth, such as products and users, with deliberately seeded cases that can be reproduced across instances.",
+        "comparison": "Exercise comparable instances with the same case and data. Define the business outcome and recovery criteria before calling one design optimal.",
+        "what_if_cycle": "Identify a question while using the model, capture it by key, reproduce it in a configured instance, inspect the result, and record a resolution or follow-up. Repeatable resolved cases can become regression tests.",
+        "result_scope": "A run records what the configured model did. A sourced Frontier observation can resolve the discovery question. Keep these evidence classes separate.",
+        "explorer_role": "Existing Discovery Explorer v0.4.0 supports Q24 assumption/scenario navigation and what-if working notes; consider incremental links from evidence and assumptions to modeled requirements, configured instances, tests and results. No Explorer change is authorized by this FRAG revision.",
+        "first_slice": null,
+        "model_fidelity": "Two distinct evaluations: (1) functional correctness against declared requirements and test cases; (2) fidelity of the modeled requirements, components, and workflows to evidence about Frontier. Passing tests does not verify an assumption about Frontier.",
+        "requirements_derivation": "Identify the sourced observation or explicit assumption underlying each modeled requirement. An assumption can define a working requirement without being misrepresented as a Frontier fact; revise affected models and tests if later evidence supersedes it.",
+        "slice_selection": "Choose initial implementation scope based on value toward a recognizable Frontier working model, logical component/interface dependencies, feasibility, testability, and potential interview demonstration. Q24 remains a candidate rather than a required starting point.",
+        "model_scope": "Model the present-day ecosystem coherently using contracts and limited simulations where sufficient; implement selected capabilities with business value and testable operation. The demonstration can grow incrementally, but does not require full ERP reproduction.",
+        "historical_boundary": "Do not reimplement 1986-era applications, generations of replacements, or historical migrations. Chronological reasoning is a heuristic for dependency and architecture rationale, not the implementation plan.",
+        "steward_primary_objective": "Land the Frontier position by being as well prepared as possible if invited to interview; produce tangible results that remain useful even if that opportunity does not materialize."
+      },
+      "work_sample_timing_bubble": {
+        "source_quote_id": "U09",
+        "X": "A concrete working best-guess model of Frontier systems, with scope and evidence/assumption boundaries stated; its functionality can grow by executable slices.",
+        "Y": "Note how long producing the stated X took, with enough boundary context to represent the productivity claim fairly. The expectation of relatively low Y is an aspiration, not an acceptance criterion or asserted result.",
+        "measurement_basis": "Lightweight capture of start, finish and pre-existing VC/SB context when useful for an interview narrative; avoid making time measurement the driver of engineering choices.",
+        "measured_result": null,
+        "interpretive_priority": "Supporting interview productivity anecdote only. X is tangible Frontier-oriented output created with VC/SB; note Y if helpful, without using measurement to drive architecture or scope.",
+        "interview_goal": "Show a tangible, functioning approximation of Frontier systems and explain its evidence, assumptions and engineering choices. X/Y is a concise productivity observation, not a mandatory scorecard."
+      },
+      "promotion_path": "Pilot the independently addressable object in Frontier. Reassess canonical SB typing after its use and dependencies can be evaluated.",
+      "project_strategy": {
+        "primary_outcome": "Land the Business Application Developer job at Frontier. The project aims to demonstrate job fit through tangible work if an interview occurs; no interview or hiring outcome is presumed.",
+        "execution_target": "Develop a coherent, navigable working approximation of Frontier present-day systems through their logical component and interface dependencies, prioritizing the most demonstrative behavior.",
+        "sequencing": "Start with concepts/interfaces needed by successor capabilities and progress toward current architecture. Dependency order is not a claim about actual system adoption chronology.",
+        "history_role": "Use Frontier business history, where supported by evidence, to inform architectural rationale, growth pressures and what-if scenarios; do not rebuild successive historical generations, migrations or obsolete applications.",
+        "scope_control": "Represent broad system responsibilities and interfaces; stub or simulate non-essential components; implement selected behavior deeply enough to be credible and testable. Avoid building an entire ERP without a distinct interview/learning benefit.",
+        "interview_readiness": "Prefer demonstrable, inspectable outputs—working behavior, integration boundaries, documented assumptions, test evidence and an explainable design rationale—over speculative breadth.",
+        "lasting_value": "Preserve reusable software components, contracts, data models, tests, reasoning and VC/SB materials whether or not the Frontier hiring opportunity materializes.",
+        "not_decided": "No first slice, specific Q24 scenario, interface technology, or implementation start is selected by this revision."
+      },
+      "delivery_simplicity_principle": {
+        "status": "steward_direction_interpreted_for_frontier",
+        "source_quote_ids": [
+          "U16",
+          "U08",
+          "U14",
+          "U15"
+        ],
+        "principle": "Build the simplest clear solution that meets present requirements, preserves correctness, and leaves reasonable room for change.",
+        "operating_rules": [
+          "Prefer useful, demonstrable business behavior over speculative architectural breadth.",
+          "Keep components, abstractions and interfaces only when justified by the current slice or demonstrated need.",
+          "Choose clear, understandable contracts and incremental, testable delivery.",
+          "Preserve practical extensibility without implementing hypothetical features prematurely.",
+          "Avoid unnecessary design rounds, artifact churn and premature physical implementations.",
+          "Keep landing the Frontier Business Application Developer position as the primary project objective; engineering outputs remain reusable."
+        ],
+        "evidence_boundary": "This is a modeling and execution principle, not verified evidence of Frontier system design or operation."
+      },
+      "stage2_1_candidate_design_direction": {
+        "status": "working_direction_not_production_fact",
+        "scope": "Sales order logical model",
+        "baseline_entities": [
+          "SalesOrder",
+          "SalesOrderLine",
+          "ExternalOrderReference",
+          "OrderStateEvent"
+        ],
+        "order_submission": "Defer separate OrderSubmission entity unless a demonstrated integration or validation requirement justifies it. Do not treat an assistant-proposed entity as a Frontier requirement.",
+        "inventory_reservation": "No reservation-ownership choice; Q24 scenarios remain unresolved.",
+        "implementation": "No Stage 2.2 SQL Server schema or C# implementation authorized by this revision.",
+        "modeling_assumption": "Simple SalesOrder lifecycle may represent pre-acceptance processing if needed, but rejection, duplication and source identity behaviors remain to be explicitly defined before implementation."
+      }
+    },
+    "design_review_boundary": "This revision captures a steward-directed Frontier engineering simplicity preference and records an incremental Stage 2.1 working direction. It does not certify Frontier production behavior, select Q24, make a physical SQL/C# design, or implement Stage 2.2. Other unresolved Stage 2.1 decisions remain unresolved.",
+    "stage1_implementation_checkpoint": {
+      "status": "compiled_and_tested_in_user_environment",
+      "date": "2026-11-06",
+      "evidence_artifact": "DAT-Frontier-Stage1-Identity-Implementation-Evidence_2026-11-06_v0.1.0.json",
+      "component": "Product identity resolver and supporting contracts / relationships",
+      "validation": "Four .NET 8 projects compiled; 10 of 10 supplied test checks passed",
+      "scope": "Stage 1 foundational identities, not a verified map of Frontier production identifiers or ERP schema",
+      "design_boundary": "Logical ERD, system authority choices and Q24 scenarios remain provisional. No advancement of other components is implied.",
+      "git_commit": "unconfirmed"
+    }
+  },
+  "provenance": {
+    "authorization": {
+      "id": "U10",
+      "speaker": "Mark J. Lynn",
+      "source": "Frontier project conversation",
+      "message_index": null,
+      "message_timestamp_utc": null,
+      "verbatim_text": "Proceed please.  I assume this lands in SB, rather than $project.  At least the bulk.",
+      "sha256_utf8": "eac81dcc721ff5d41b651fbaa5cf74425970c1d05d4e256efddcad22d2c9f892"
+    },
+    "artifact_sources": [
+      {
+        "artifact": "DAT-Frontier-Discovery-Questions_2026-11-05_v0.7.0.json",
+        "artifact_version": "0.7.0",
+        "snapshot": "SBPKG__FrontierDistribution_2026-11-06_1144-0500.zip",
+        "sha256": "e19438edca2851c6d0ce8c73f57f60d71af82e470b8a27be4ba8fd4602b68fc6"
+      },
+      {
+        "artifact": "DAT-Frontier-nopCommerce-Discovery-Questions_2026-11-04_v0.3.0.json",
+        "artifact_version": "0.3.0",
+        "snapshot": "SBPKG__FrontierDistribution_2026-11-06_1144-0500.zip",
+        "sha256": "8f2b1b9373513c09b4fc8a82d9bd070f7569d0c7e9d5bfdb19bc455fd1b6fbe3"
+      },
+      {
+        "artifact": "DAT-Frontier-Working-Systems-Map_2026-11-04_v0.8.0.json",
+        "artifact_version": "0.8.0",
+        "snapshot": "SBPKG__FrontierDistribution_2026-11-06_1144-0500.zip",
+        "sha256": "24d8e4ff780afdf5ea3179485218fd46445594db9241016d30d154844c80b4b2"
+      },
+      {
+        "artifact": "FRAG-Frontier-Architecture-Hypotheses_2026-10-26_v0.1.0.json",
+        "artifact_version": "0.1.0",
+        "snapshot": "SBPKG__FrontierDistribution_2026-11-06_1144-0500.zip",
+        "sha256": "89dc43e6bf8572a50c9b66a97cf352598f98dafd52244b75f9bf92ab5ca8405d"
+      },
+      {
+        "artifact": "FRAG_Frontier_COMM-Ground_SoS-Solution-Separation_2026-10-27_v0.2.0.json",
+        "artifact_version": "0.2.0",
+        "snapshot": "SBPKG__FrontierDistribution_2026-11-06_1144-0500.zip",
+        "sha256": "2e27d3977d77e251527bbb7a9144365f22f86b14c6078ee64e3892e4cb70664b"
+      }
+    ],
+    "working_note": {
+      "filename": "Frontier-Discovery-Working.json",
+      "graph_id": "frontier-discovery-explorer",
+      "record_id": "D-2edf6445-f56a-4709-b319-5aa4a78fe587",
+      "target": {
+        "key": "question:Q24",
+        "route": "c/nopCommerce/t/questions/d/NQ03",
+        "label": "NQ03"
+      },
+      "kind": "Comment",
+      "status": "Open",
+      "updated_at": "2026-11-05T22:45:41.501Z",
+      "verbatim_body": "If there isn't just one owner (source of truth), there should be.  This could be an area of improvement.\n\nAlso, if batch cycles exist to keep things in synch, replication should be considered.",
+      "role": "Steward working observation and conditional suggestion."
+    },
+    "governing_references": [
+      "SB-meta_SpocksBrain_v2.11.1.json",
+      "FRAG-meta_v1.0.1.json",
+      "FRAG-SB-Meta-COMM-Ground-Preserve-Brain-Bubble-Wording_2026-11-04_v0.1.0.json",
+      "FRAG_SB-Meta_CUB-ArtifactMaintenanceCheck_2026-05-15_v1.0.0.json"
+    ],
+    "revision_source": {
+      "conversation": "Frontier current thread, simplicity and expedient delivery direction, 2026-11-07",
+      "source_quote_ids": [
+        "U16"
+      ],
+      "baseline_artifact": "FRAG-Frontier-Assumption-Sets-And-Executable-Scenarios_2026-11-06_v0.3.1.json",
+      "baseline_artifact_sha256": "24c3365f0b140a765ff6cf9e8e3d03afd70d4e8965391661abfe4417a0413e31",
+      "treatment": "Additive FRAG concept revision. Preserve user verbatim sources, Q24 scenarios, existing assumptions and evidence/interpretation separation."
+    }
+  },
+  "engine_signature": {
+    "engine_vendor": "openai",
+    "engine_family": "GPT-6",
+    "engine_model": "GPT-6",
+    "signature_role": "update",
+    "signature_timestamp_utc": "2026-11-07T18:40:31.940949Z",
+    "notes": "Frontier delivery simplicity concept, Stage 2.1 conditional OrderSubmission deferral; draft/inactive preserved. UTC generated at artifact creation."
+  },
+  "revision_history": [
+    {
+      "version": "0.1.0",
+      "source": "2026-11-06 13:16 -0500 SBPKG",
+      "summary": "Initial draft concept, Q24 alternative scenarios, verbatim steward thought stream and X/Y bubble."
+    },
+    {
+      "version": "0.2.0",
+      "date_utc": "2026-11-06T18:40:46+00:00",
+      "source_quote_ids": [
+        "U11",
+        "U12"
+      ],
+      "summary": "Clarify Frontier-specific working-model objective; derive requirements from labeled assumptions; demote X/Y to secondary interview/productivity observation; retain draft status and unselected Q24 scenarios."
+    },
+    {
+      "version": "0.3.0",
+      "date_utc": "2026-11-06",
+      "source_quote_ids": [
+        "U13",
+        "U14",
+        "U15"
+      ],
+      "summary": "Identify landing the Frontier role as primary objective; capture logical component/interface progression and reuse of tangible outputs; history is rationale, not a build schedule; retain secondary X/Y."
+    },
+    {
+      "version": "0.3.1",
+      "date_utc": "2026-11-06",
+      "summary": "Link user-reported Stage 1 four-project build and 10/10 test evidence via candidate DAT; preserve Q24 and assumptions; no new Frontier evidence or scenario decision."
+    },
+    {
+      "version": "0.4.0",
+      "date_utc": "2026-11-07",
+      "source_quote_ids": [
+        "U16"
+      ],
+      "summary": "Capture steward simplicity/clarity/expedient-delivery principle; defer separate OrderSubmission absent demonstrated need; preserve Q24 alternatives and draft status."
+    }
+  ]
+}

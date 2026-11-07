@@ -1,0 +1,52 @@
+using System.Text.Json;
+using Frontier.Identity;
+using Frontier.Orders;
+
+var dir = AppContext.BaseDirectory;
+var catalog = IdentityCatalog.Load(Path.Combine(dir, "synthetic-identities.json"));
+var incoming = JsonSerializer.Deserialize<IncomingOrder>(File.ReadAllText(Path.Combine(dir, "synthetic-order.json")))!;
+var stock = JsonSerializer.Deserialize<StockQuantity[]>(File.ReadAllText(Path.Combine(dir, "synthetic-stock.json")))!;
+var order = new OrderIntake(catalog, new ProductIdentityResolver(catalog)).Receive(incoming).Order!;
+var availability = new InventoryAvailability(catalog, "WH-01", stock);
+var plan = new PickPlanning().Create(order, availability.Assess(order));
+var confirmation = new PickConfirmation("PICK-0001", order.SalesOrderId, "WH-01", new[] {
+    new PickedLine("P000142", 3), new PickedLine("P000143", 2)
+});
+var execution = new PickExecution();
+var result = execution.Confirm(plan, confirmation);
+Console.WriteLine("STAGE 2: order -> inventory -> pick plan -> synthetic pick confirmation (no stock posting)");
+Console.WriteLine("PLAN " + JsonSerializer.Serialize(plan));
+Console.WriteLine("CONFIRMATION " + JsonSerializer.Serialize(confirmation));
+Console.WriteLine("EXECUTION " + JsonSerializer.Serialize(result));
+int total = 0, failed = 0;
+void Check(string name, bool pass) { total++; if (!pass) failed++; Console.WriteLine($"{(pass ? "PASS" : "FAIL")} {name}"); }
+PickConfirmation With(params PickedLine[] lines) => confirmation with { Lines = lines };
+Check("Full pick confirmed", result.Status == PickExecutionStatus.Completed);
+Check("Order and warehouse retained", result.SalesOrderId == order.SalesOrderId && result.WarehouseId == "WH-01");
+Check("Confirmation identifier retained", result.ConfirmationId == "PICK-0001");
+Check("Picked quantities retained", result.Lines.Single(x => x.ProductId == "P000142").Quantity == 3 && result.Lines.Single(x => x.ProductId == "P000143").Quantity == 2);
+Check("Identical replay is idempotent", execution.Confirm(plan, confirmation).Status == PickExecutionStatus.AlreadyRecorded);
+Check("Replay with changed quantities rejected", execution.Confirm(plan, With(new("P000142", 2), new("P000143", 2))).Status == PickExecutionStatus.Rejected);
+Check("Another confirmation rejected", execution.Confirm(plan, confirmation with { ConfirmationId = "PICK-0002" }).Status == PickExecutionStatus.Rejected);
+Check("Overpick rejected", new PickExecution().Confirm(plan, With(new("P000142", 4), new("P000143", 2))).Status == PickExecutionStatus.Rejected);
+Check("Negative quantity rejected", new PickExecution().Confirm(plan, With(new("P000142", -1), new("P000143", 2))).Status == PickExecutionStatus.Rejected);
+Check("Unknown product rejected", new PickExecution().Confirm(plan, With(new("P000142", 3), new("P999999", 2))).Status == PickExecutionStatus.Rejected);
+Check("Duplicate products rejected", new PickExecution().Confirm(plan, With(new("P000142", 1), new("P000142", 2))).Status == PickExecutionStatus.Rejected);
+Check("Omitted product rejected", new PickExecution().Confirm(plan, With(new("P000142", 3))).Status == PickExecutionStatus.Rejected);
+Check("Wrong order rejected", new PickExecution().Confirm(plan, confirmation with { SalesOrderId = "SO-WRONG" }).Status == PickExecutionStatus.Rejected);
+Check("Wrong warehouse rejected", new PickExecution().Confirm(plan, confirmation with { WarehouseId = "WH-WRONG" }).Status == PickExecutionStatus.Rejected);
+Check("Missing confirmation ID rejected", new PickExecution().Confirm(plan, confirmation with { ConfirmationId = "" }).Status == PickExecutionStatus.Rejected);
+Check("Blocked plan rejected", new PickExecution().Confirm(plan with { Status = PickPlanStatus.BlockedShort, Lines = Array.Empty<PickLine>() }, confirmation).Status == PickExecutionStatus.Rejected);
+var partialEngine = new PickExecution();
+var partial = partialEngine.Confirm(plan, With(new("P000142", 1), new("P000143", 0)));
+Check("Partial pick recorded", partial.Status == PickExecutionStatus.Partial && partial.Lines.Single(x => x.ProductId == "P000143").Quantity == 0);
+Check("Partial replay idempotent", partialEngine.Confirm(plan, With(new("P000143", 0), new("P000142", 1))).Status == PickExecutionStatus.AlreadyRecorded);
+Check("Invalid attempt does not occupy plan", new PickExecution().Confirm(plan, With(new("P000142", 3), new("P000143", 10))).Status == PickExecutionStatus.Rejected);
+var retryEngine = new PickExecution();
+retryEngine.Confirm(plan, With(new("P000142", 3), new("P000143", 10)));
+Check("Valid retry after rejection succeeds", retryEngine.Confirm(plan, confirmation).Status == PickExecutionStatus.Completed);
+Check("Order state unchanged", order.Status == "Received");
+Check("Inventory unchanged", availability.Assess(order).Status == AvailabilityStatus.Available && availability.Assess(order).Lines.Single(l => l.ProductId == "P000142").OnHand == 10);
+Check("Plan unchanged", plan.Status == PickPlanStatus.Ready && plan.Lines.Count == 2);
+Console.WriteLine($"RESULT: {total - failed}/{total} passed");
+return failed == 0 ? 0 : 1;
