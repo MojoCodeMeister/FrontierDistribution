@@ -1,0 +1,97 @@
+{
+  "artifact_type": "FRAG",
+  "frag_type": "comm",
+  "comm_subtype": "ground",
+  "domain": "Frontier",
+  "lane": "60_COMM",
+  "status": "active",
+  "active": true,
+  "created_utc": "2026-11-07T22:24:00Z",
+  "consumer": "Human Orchestrator / The Team (AI development hosts)",
+  "author": "ChatGPT / Chet",
+  "on_behalf_of": "Human Orchestrator",
+  "title": "Frontier Development — Pragmatic Clean Code and SOLID Convention",
+  "artifact_version": "0.1.0",
+  "recommended_filename": "FRAG-Frontier-Development-CodingConvention_2026-11-07_v0.1.0.json",
+  "recommended_storage_path": "S:\\Projects\\$FrontierDistribution\\$_ProjectBrain\\60_COMM",
+  "content": {
+    "purpose": "Guide future coding for the Frontier executable best-guess business-systems demonstration without overriding mission, architecture decisions, or completed functionality.",
+    "mission_guardrail": "Land the Frontier Business Application Developer position through a credible, executable best-guess representation of Frontier business systems; demonstrate practical engineering rather than claim knowledge of Frontier internals.",
+    "guiding_principle": "Optimize for understandable intent, changeability, and practical delivery. Perfect is the enemy of the good.",
+    "principles": {
+      "clean_code": [
+        "Meaningful intention-revealing names",
+        "Focused methods and classes with coherent responsibilities",
+        "Explicit control flow where it improves traceability",
+        "Encapsulation of invariants and deliberate state changes",
+        "Readable tests and clear failures"
+      ],
+      "solid": {
+        "S": "Single Responsibility — focused reason to change",
+        "O": "Open/Closed — extend at meaningful variation points; do not create speculative frameworks",
+        "L": "Liskov Substitution — substitutable implementations honor contracts",
+        "I": "Interface Segregation — narrow interfaces for actual consumers",
+        "D": "Dependency Inversion — abstractions at justified boundaries, not one per class"
+      },
+      "dry": "Consolidate meaningful duplication when it improves clarity; avoid premature generalization.",
+      "kiss": "Choose the simplest design that makes the current business behavior correct, explicit, and testable.",
+      "yagni": "Do not build anticipated infrastructure, models, or abstractions without current demonstrated need."
+    },
+    "csharp_preferences": [
+      "Prefer explicit business intent and named intermediate operations over densely compressed expressions.",
+      "Use records for data transfer/results when appropriate; use encapsulated services for behavior and invariants.",
+      "Use interfaces, DI, repositories, and adapters when there is a real substitution, testing, or infrastructure boundary.",
+      "Keep business rules distinct from persistence, external integrations, and presentation.",
+      "Use modern C# features when they enhance readability; avoid cleverness for its own sake."
+    ],
+    "existing_code_policy": [
+      "Preserve verified functionality and previously passed tests.",
+      "No bulk refactoring or style-only rewrite.",
+      "Refactor locally when it produces concrete readability, safety, or maintainability value; reverify behavior.",
+      "Do not reopen completed stages merely to conform code style."
+    ],
+    "delivery_discipline": [
+      "Implement incrementally toward mission value; preserve chronological business-flow development as the current working approach, not a newly invented global governance rule.",
+      "Build → Execute → Verify → Advance.",
+      "Use established Downloads ZIP plus PowerShell installer workflow; include Unblock-File and safe backup/install semantics.",
+      "Keep synthetic/demo assumptions clearly separated from known Frontier facts."
+    ],
+    "precedence": "Project-scoped coding guidance; subordinate to human direction, operative SB governance and technical decisions, and current mission priorities. Does not change stage scope, project status, architecture, or system facts.",
+    "out_of_scope": [
+      "No mandatory rewrite of Stage 1 or Stage 2 components.",
+      "No automatic migration of console harnesses to xUnit.",
+      "No new system architecture approval or decision on real ERP/WMS interfaces.",
+      "No edits to the general Development ReferenceShelf."
+    ]
+  },
+  "provenance": {
+    "source": "Frontier project conversation 2026-11-07; user approved Clean Code + SOLID, balanced by DRY/KISS/YAGNI; explicit CUB followed by Proceed.",
+    "source_class": "Steward-approved project development convention; not verified Frontier internal architecture.",
+    "baseline_package": "SBPKG__FrontierDistribution_2026-11-07_1509-0500(1).zip",
+    "reviewed_existing": "SHELF-Guidelines-CleanCode_v0.1.0.json (Development ReferenceShelf; general draft), existing Frontier project FRAGs and DEC inventory; no dedicated project coding convention located."
+  },
+  "related_artifacts": [
+    "SHELF-Guidelines-CleanCode_v0.1.0.json",
+    "SHELF-Guidelines-CodeComplete2_v0.1.0.json",
+    "_SB-Meta/60_COMM/FRAG-SB-Meta-ConversationHandoff-MissionPreservation_2026-11-07_v1.1.0.json"
+  ],
+  "revision_history": [
+    {
+      "version": "0.1.0",
+      "date_utc": "2026-11-07",
+      "action": "create",
+      "authority": "User explicitly instructed Proceed after CUB assessment",
+      "summary": "Project coding convention; Clean Code + SOLID with pragmatic DRY/KISS/YAGNI, no mandatory refactor."
+    }
+  ],
+  "engine_signature": {
+    "engine_vendor": "openai",
+    "engine_family": "GPT",
+    "engine_model": "GPT-6",
+    "signature_role": "create",
+    "signature_timestamp_utc": "2026-11-07",
+    "confidence": "high",
+    "notes": "Package generated; installation on steward machine not yet verified."
+  },
+  "installation_note": "Corrected project-brain placement 2026-11-09: prior installer targeted the research nest S:\\Brain-FrontierDistribution\\$_ProjectBrain, which was not the project-brain source enumerated by SBPKG."
+}

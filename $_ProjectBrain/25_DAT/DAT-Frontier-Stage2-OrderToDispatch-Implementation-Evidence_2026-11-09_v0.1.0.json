@@ -1,0 +1,100 @@
+{
+  "artifact_type": "DAT",
+  "domain": "Frontier",
+  "lane": "25_DAT",
+  "title": "Stage 2 Synthetic Order-to-Dispatch: Build and Test Evidence",
+  "artifact_version": "0.1.0",
+  "status": "candidate",
+  "active": false,
+  "created_utc": "2026-11-09T17:30:00Z",
+  "as_of_date": "2026-11-09",
+  "recommended_filename": "DAT-Frontier-Stage2-OrderToDispatch-Implementation-Evidence_2026-11-09_v0.1.0.json",
+  "recommended_storage_path": "S:\\Projects\\$FrontierDistribution\\$_ProjectBrain\\25_DAT",
+  "provenance": {
+    "evidence_kind": "steward_supplied_console_transcript",
+    "source": "Frontier project conversation; Freya PowerShell output supplied November 7, 2026 after Install-Frontier-Shipping-v0.1.0.ps1",
+    "source_file": "Pasted text.txt (180 lines)",
+    "baseline_sb_snapshot": "SBPKG__FrontierDistribution_2026-11-09_0404-0500.zip",
+    "observation_limitations": [
+      "Assistant did not execute .NET on Freya or inspect current worktree",
+      "Build and tests are reported from user-provided console output",
+      "128 tests represent console harness checks, not a single end-to-end integration runner",
+      "No verified Frontier production infrastructure or business behavior",
+      "Git commit, tag, and push status not confirmed by supplied transcript"
+    ]
+  },
+  "content": {
+    "milestone": "Stage 2 synthetic order intake through shipment dispatch",
+    "implementation_root_at_test": "C:\\Projects\\$FrontierDistribution",
+    "current_workspace_path_user_supplied": "S:\\Projects",
+    "current_sb_download_path_user_supplied": "S:\\_Downloads",
+    "environment": {
+      "host": "Freya",
+      "target_framework": "net8.0"
+    },
+    "build": {
+      "status": "passed",
+      "projects_succeeded": 11,
+      "elapsed_reported": "2.1s"
+    },
+    "tests": {
+      "status": "passed",
+      "passed": 128,
+      "total": 128,
+      "harnesses": 7,
+      "results": {
+        "Stage 1 identity": 20,
+        "Order intake": 11,
+        "Inventory availability": 10,
+        "Pick planning": 13,
+        "Pick execution": 23,
+        "Packing": 24,
+        "Shipping and dispatch": 27
+      }
+    },
+    "observed_examples": {
+      "external_order": "WEB-10001",
+      "internal_order": "SO-0001",
+      "warehouse": "WH-01",
+      "shipment": "SHIP-0001",
+      "shipment_status_after_creation": "Prepared",
+      "shipment_status_after_dispatch": "Dispatched",
+      "products": {
+        "P000142": 3,
+        "P000143": 2
+      }
+    },
+    "verified_constraints": [
+      "Synthetic shipment created from ready packing result",
+      "Dispatch confirmation is a separate action",
+      "Idempotent replay and conflicting duplicate handling tested",
+      "Order, inventory, pick, and packing state remained unchanged"
+    ],
+    "outstanding_stage2": [
+      "Unified executable order-to-dispatch runner",
+      "End-to-end component integration verification",
+      "Human-readable demonstration output",
+      "Architecture/workflow documentation and assumptions",
+      "Git/SBPKG synchronization confirmation"
+    ],
+    "out_of_scope": [
+      "Actual Frontier ERP/WMS integration",
+      "Real carrier API",
+      "Inventory posting or financial/accounting posting"
+    ],
+    "version_control": {
+      "commit": "unverified",
+      "mimir_push": "unverified"
+    },
+    "completion_statement": "Stage 2 individual capabilities and 128 console checks built and passed per steward-provided transcript; unified integrated runner remains outstanding."
+  },
+  "engine_signature": {
+    "engine_vendor": "openai",
+    "engine_family": "GPT",
+    "engine_model": "GPT-6",
+    "signature_role": "create",
+    "signature_timestamp_utc": "2026-11-09",
+    "notes": "Evidence record based on steward-supplied console transcript; installation not yet confirmed."
+  },
+  "installation_note": "Corrected project-brain placement 2026-11-09: prior installer targeted the research nest S:\\Brain-FrontierDistribution\\$_ProjectBrain, which was not the project-brain source enumerated by SBPKG."
+}
