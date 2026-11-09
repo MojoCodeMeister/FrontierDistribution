@@ -1,0 +1,120 @@
+{
+  "artifact_type": "DAT",
+  "domain": "Frontier",
+  "lane": "25_DAT",
+  "title": "Stage 2 Synthetic Order-to-Dispatch: Build and Test Evidence",
+  "artifact_version": "0.2.0",
+  "status": "candidate",
+  "active": false,
+  "created_utc": "2026-11-09T21:57:00Z",
+  "as_of_date": "2026-11-09",
+  "recommended_filename": "DAT-Frontier-Stage2-OrderToDispatch-Implementation-Evidence_2026-11-09_v0.2.0.json",
+  "recommended_storage_path": "S:\\Projects\\$FrontierDistribution\\$_ProjectBrain\\25_DAT",
+  "provenance": {
+    "evidence_kind": "steward_supplied_console_transcript",
+    "source": "Frontier project conversation; Freya PowerShell full-regression transcript supplied November 9, 2026 after Stage 2 nullable-fix v0.1.1 installation",
+    "source_file": "Pasted text(2).txt (222 lines); also earlier Pasted text(1).txt (240 lines)",
+    "baseline_sb_snapshot": "SBPKG__FrontierDistribution_2026-11-09_1657-0500.zip",
+    "observation_limitations": [
+      "Freya build and test execution evidenced by steward-supplied console transcript",
+      "Current Git commit and remote synchronization not established by regression transcript"
+    ],
+    "supersedes": "DAT-Frontier-Stage2-OrderToDispatch-Implementation-Evidence_2026-11-09_v0.1.0.json"
+  },
+  "content": {
+    "milestone": "Stage 2 synthetic order intake through shipment dispatch",
+    "implementation_root_at_test": "S:\\Projects\\$FrontierDistribution",
+    "current_workspace_path_user_supplied": "S:\\Projects\\$FrontierDistribution",
+    "current_sb_download_path_user_supplied": "S:\\_Downloads",
+    "environment": {
+      "host": "Freya",
+      "target_framework": "net8.0"
+    },
+    "build": {
+      "status": "passed",
+      "projects_succeeded": 12,
+      "elapsed_reported": "6.9s",
+      "warnings_reported": 0,
+      "source": "Pasted text(2).txt lines 1-15"
+    },
+    "tests": {
+      "status": "passed",
+      "passed": 157,
+      "total": 157,
+      "harnesses": 8,
+      "results": {
+        "Stage 1 identity": 20,
+        "Order intake": 11,
+        "Inventory availability": 10,
+        "Pick planning": 13,
+        "Pick execution": 23,
+        "Packing": 24,
+        "Shipping and dispatch": 27,
+        "End-to-end integration": 29
+      },
+      "source": "Pasted text(2).txt lines 17-221"
+    },
+    "observed_examples": {
+      "external_order": "WEB-10001",
+      "internal_order": "SO-0001",
+      "warehouse": "WH-01",
+      "shipment": "SHIP-0001",
+      "shipment_status_after_creation": "Prepared",
+      "shipment_status_after_dispatch": "Dispatched",
+      "products": {
+        "P000142": 3,
+        "P000143": 2
+      }
+    },
+    "verified_constraints": [
+      "Complete chronological order-to-dispatch sequence executes through existing business components",
+      "Source and business identifiers retained across order, pick, pack, shipment and dispatch",
+      "Quantities retained from accepted order through dispatched shipment",
+      "Idempotent replay confirmed at intake, pick, packing, shipment and dispatch boundaries",
+      "Conflicting shipment and dispatch rejected",
+      "Short-stock scenario blocks pick planning and confirmation",
+      "Order, inventory, pick and packing state unchanged by downstream confirmation",
+      "Full regression suite passed across eight test harnesses"
+    ],
+    "outstanding_stage2": [
+      "Git commit and remote synchronization confirmation",
+      "Regenerate SBPKG and verify evidence v0.2.0 inclusion"
+    ],
+    "out_of_scope": [
+      "Actual Frontier ERP/WMS integration",
+      "Real carrier API",
+      "Inventory posting or financial/accounting posting"
+    ],
+    "version_control": {
+      "commit": "unverified",
+      "mimir_push": "unverified"
+    },
+    "completion_statement": "Stage 2 integrated order-to-dispatch runner executed on Freya; solution build succeeded with zero reported warnings and all 157 checks passed across eight test harnesses.",
+    "integration_runner": {
+      "project": "tests/Frontier.EndToEnd.Tests",
+      "assertions_passed": 29,
+      "assertions_total": 29,
+      "result": "STAGE 2 INTEGRATION: VERIFIED IN THIS RUN"
+    },
+    "milestone_status": "implementation_and_integration_verified"
+  },
+  "engine_signature": {
+    "engine_vendor": "openai",
+    "engine_family": "GPT",
+    "engine_model": "GPT-6",
+    "signature_role": "update",
+    "signature_timestamp_utc": "2026-11-09T21:57:00Z",
+    "notes": "Updated with supplied 2026-11-09 Freya full regression transcript; no local .NET execution by assistant."
+  },
+  "installation_note": "Installer targets project-brain source at S:\\Projects\\$FrontierDistribution\\$_ProjectBrain\\25_DAT; preserves v0.1.0 and verifies predecessor SHA-256.",
+  "revision_history": [
+    {
+      "version": "0.1.0",
+      "summary": "Seven-harness baseline, 128 checks, runner outstanding"
+    },
+    {
+      "version": "0.2.0",
+      "summary": "Eight-harness integrated regression, 157 checks, zero reported build warnings"
+    }
+  ]
+}
