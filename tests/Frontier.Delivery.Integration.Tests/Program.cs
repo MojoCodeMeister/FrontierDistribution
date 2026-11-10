@@ -1,12 +1,9 @@
 using Frontier.Delivery;
 using System.Text.Json;
 
-Console.WriteLine("BUSINESS SYSTEM: Transportation / Distribution");
-Console.WriteLine("BUSINESS SOFTWARE: ERP / Shipping (dispatch source) -> Route4Me (delivery execution)");
-Console.WriteLine("BUSINESS PROCESS: Order-to-Dispatch -> Dispatch-to-Delivery");
-Console.WriteLine("BUSINESS COMPONENTS: Dispatch -> Delivery Execution and Confirmation");
-Console.WriteLine("IMPLEMENTATION: Frontier.Shipping.Tests output -> Frontier.Delivery");
-Console.WriteLine("INTEGRATION: actual Stage 2 dispatch result consumed by Stage 3.1; no external API calls");
+ArchitectureContext.Write(Console.Out, typeof(DeliveryExecution).Assembly);
+Console.WriteLine("HARNESS: Frontier.Delivery.Integration.Tests");
+Console.WriteLine("INTEGRATION: Actual Stage 2 dispatch result consumed by Stage 3.1; no external API calls");
 Console.WriteLine();
 
 if (args.Length != 1 || !File.Exists(args[0]))

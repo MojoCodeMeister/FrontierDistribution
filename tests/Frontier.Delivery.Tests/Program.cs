@@ -1,12 +1,10 @@
 using Frontier.Delivery;
 using System.Text.Json;
 
-Console.WriteLine("BUSINESS SYSTEM: Transportation / Distribution");
-Console.WriteLine("BUSINESS SOFTWARE: Route4Me (delivery execution); ERP (shipment/order system of record)");
-Console.WriteLine("PROCESS: Dispatch-to-Delivery | COMPONENT: Delivery Execution and Confirmation");
-Console.WriteLine("INTEGRATION: ERP/Shipping -> Route4Me delivery outcome -> ERP/Customer Service (conceptual)");
-Console.WriteLine("IMPLEMENTATION: Frontier.Delivery | HARNESS: Frontier.Delivery.Tests");
+ArchitectureContext.Write(Console.Out, typeof(DeliveryExecution).Assembly);
+Console.WriteLine("HARNESS: Frontier.Delivery.Tests");
 Console.WriteLine();
+
 int passed = 0, failed = 0;
 void Check(string label, bool ok) { Console.WriteLine($"{(ok ? "PASS" : "FAIL")} [Route4Me/Delivery] {label}"); if (ok) passed++; else failed++; }
 var svc = new DeliveryExecution();
