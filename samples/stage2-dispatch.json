@@ -1,0 +1,10 @@
+{
+  "ShipmentId": "SHIP-0001",
+  "SalesOrderId": "SO-0001",
+  "WarehouseId": "WH-01",
+  "Status": "Dispatched",
+  "Lines": [
+    { "ProductId": "P000142", "Quantity": 3 },
+    { "ProductId": "P000143", "Quantity": 2 }
+  ]
+}
