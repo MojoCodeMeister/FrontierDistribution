@@ -1,0 +1,121 @@
+{
+  "artifact_type": "DAT",
+  "domain": "Frontier",
+  "lane": "25_DAT",
+  "title": "Stage 3.1 Dispatch-to-Delivery: Implementation and Integration Evidence",
+  "artifact_version": "0.1.0",
+  "status": "candidate",
+  "active": false,
+  "created_utc": "2026-11-10T17:00:00Z",
+  "as_of_date": "2026-11-10",
+  "recommended_filename": "DAT-Frontier-Stage3_1-DispatchToDelivery-Implementation-Evidence_2026-11-10_v0.1.0.json",
+  "recommended_storage_path": "S:\\Projects\\$FrontierDistribution\\$_ProjectBrain\\25_DAT",
+  "steward_authorization": "User: Proceed, 2026-11-10, following CUB decision to create Stage 3.1 evidence and bump Business Architecture to v0.9.0.",
+  "provenance": {
+    "evidence_kind": "steward_supplied_console_transcripts",
+    "run_source": "Pasted text(3).txt, 260 lines, user supplied November 9, 2026",
+    "specific_lines": {
+      "Stage 1/2 regression": "6-202",
+      "Stage 3.1": "203-233",
+      "Stage 3.1 integration": "234-259"
+    },
+    "git_source": "User-supplied Git transcript: ab1358c commit; mimir/main and github/main push outputs; clean status and synchronized log",
+    "baseline_sb_snapshot": "SBPKG__FrontierDistribution_2026-11-09_1704-0500(1).zip",
+    "constraints": [
+      "Compilation and runtime tests observed in user-provided Freya transcript; assistant did not run dotnet",
+      "Integration harness consumes Stage 2 test DISPATCH output, not direct SDK/API integration",
+      "No live ERP/Route4Me API exchange or operational Frontier access demonstrated"
+    ]
+  },
+  "content": {
+    "milestone": "Stage 3.1 — Delivery Execution and Confirmation",
+    "milestone_status": "implementation_and_test_output_integration_verified",
+    "mission_alignment": "Chronological, incremental executable business model to demonstrate application development and learn software/business roles at Frontier.",
+    "business_architecture": {
+      "business_system": "Transportation / Distribution",
+      "business_software_primary": "Route4Me",
+      "business_software_upstream": "ERP / Shipping model",
+      "business_process": "BP-DD — Dispatch-to-Delivery",
+      "business_component": "BC-09 — Delivery Execution and Confirmation (proposed mapping)",
+      "relationship": "Stage 2 Shipping/Dispatch -> Stage 3.1 Delivery -> conceptual ERP/Customer Service outcome consumption"
+    },
+    "implementation": {
+      "project": "Frontier.Delivery",
+      "source": "src/Frontier.Delivery/Delivery.cs",
+      "harness": "tests/Frontier.Delivery.Tests",
+      "integration_harness": "tests/Frontier.Delivery.Integration.Tests",
+      "combined_runner": "Verify-Frontier-Stage3.1-Integrated.ps1",
+      "handoff": "capture Frontier.Shipping.Tests DISPATCH JSON and pass shipment to Frontier.Delivery"
+    },
+    "test_results": {
+      "status": "passed",
+      "Stage 1/2": {
+        "passed": 157,
+        "total": 157,
+        "harnesses": 8
+      },
+      "Stage 3.1 delivery": {
+        "passed": 22,
+        "total": 22,
+        "harnesses": 1
+      },
+      "Stage 3.1 integration": {
+        "passed": 13,
+        "total": 13,
+        "harnesses": 1
+      },
+      "overall": {
+        "passed": 192,
+        "total": 192,
+        "harnesses": 10
+      },
+      "evidence": "Pasted text(3).txt lines 1-259"
+    },
+    "observed_examples": {
+      "external_order": "WEB-10001",
+      "sales_order": "SO-0001",
+      "warehouse": "WH-01",
+      "shipment": "SHIP-0001",
+      "shipment_status": "Dispatched",
+      "products": {
+        "P000142": 3,
+        "P000143": 2
+      },
+      "integration_delivery_event": "DEL-E2E-0001",
+      "proof_of_delivery": "POD-E2E-0001"
+    },
+    "verified_behavior": [
+      "Dispatched shipment accepted into delivery model",
+      "Shipment, sales order, warehouse, product identity and quantities retained",
+      "Delivery with proof recorded",
+      "Delivery terminal event replay idempotent",
+      "Conflicting delivery outcome rejected",
+      "Pre-dispatch delivery blocked",
+      "Exception outcome and reason traceable",
+      "Original shipment quantities not changed"
+    ],
+    "integration_scope": "Stage 2 Shipping harness output to Stage 3.1 Delivery library via integration harness",
+    "version_control": {
+      "commit": "ab1358c",
+      "branch": "main",
+      "remotes": [
+        "mimir/main",
+        "github/main"
+      ],
+      "sync_status": "user_console_verified",
+      "working_tree": "clean"
+    },
+    "preservation": [
+      "Stage 1/2 source unchanged by Stage 3.1 installation",
+      "Stage 2 evidence v0.2.0 remains unchanged"
+    ],
+    "next_process": "Business-level definition of subsequent chronological slice; no approval implied"
+  },
+  "engine_signature": {
+    "engine_vendor": "openai",
+    "engine_family": "GPT",
+    "engine_model": "GPT-6",
+    "signature_role": "create",
+    "signature_timestamp_utc": "2026-11-10T17:00:00Z"
+  }
+}
