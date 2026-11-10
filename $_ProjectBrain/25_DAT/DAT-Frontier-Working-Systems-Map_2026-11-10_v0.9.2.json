@@ -1,0 +1,1946 @@
+{
+  "artifact_type": "DAT",
+  "domain": "Frontier",
+  "title": "Working Systems Map",
+  "artifact_version": "0.9.2",
+  "status": "candidate",
+  "created_utc": "2026-10-26T16:45:00Z",
+  "as_of_date": "2026-11-10",
+  "steward_authorization": "Human Orchestrator: Proceed on order origination and Business Application ownership CUB, 2026-11-10.",
+  "provenance": {
+    "sources": "Exact preserved predecessor plus scoped user-supplied ContactOut CSV, browser-print PDFs, expanded-card screenshot reference, pasted profile, and direct collection-context statements.",
+    "limitations": "Compiled profile statements are not an internally verified organization chart or application inventory. No new live ERP-product verification or Frontier technical interview occurred. Original/source variants and missing fields are retained.",
+    "source_capture_artifact": "DAT-Frontier-People-And-Profiles_2026-10-30_v0.1.0.json",
+    "additional_sources_2026_10_31": "Four complete direct LinkedIn profile captures, full steward-supplied Connie recruiting post and qualified source-specific observations",
+    "additional_sources_2026_11_04": {
+      "capture_root": "$_ProjectBrain/90_SOURCE_DOCUMENTS/Frontier-NopCommerce-SQLServer-CUB_2026-11-04_v0.1.0",
+      "source_ids": [
+        "S58",
+        "S59",
+        "S60",
+        "S61",
+        "S62",
+        "S63",
+        "S64",
+        "S65"
+      ],
+      "source_register": "DAT-Frontier-Research-Evidence_2026-11-04_v0.7.0.json",
+      "scope": "Bounded current conversation, public Frontier observations and primary-source platform notes; no full-page archive or new Frontier internal answers."
+    },
+    "discovery_cub_source": {
+      "source_capture": "$_ProjectBrain/90_SOURCE_DOCUMENTS/Frontier-nopCommerce-Discovery-CUB_2026-11-04_v0.1.0/Conversation-Excerpts.json",
+      "authorization": "User 'Proceed with CUB generation' after the positive maintenance check covering practical discovery depth, nopCommerce priorities, job-listing mapping, configuration, inventory authority and SQL topology.",
+      "predecessor_snapshot": "history/current-predecessors/DAT-Frontier-Working-Systems-Map_2026-11-04_v0.7.0.json"
+    }
+  },
+  "content": {
+    "nodes": [
+      {
+        "id": "n-lead",
+        "label": "Leadership / priorities",
+        "type": "business_function",
+        "evidence_class": "posting_claim",
+        "claim_ids": [
+          "F09",
+          "F12"
+        ]
+      },
+      {
+        "id": "n-retail",
+        "label": "Independent retailers",
+        "type": "external_party",
+        "evidence_class": "sourced_current",
+        "claim_ids": [
+          "F01",
+          "F06"
+        ]
+      },
+      {
+        "id": "n-sales",
+        "label": "Sales / customer service",
+        "type": "business_function",
+        "evidence_class": "posting_claim",
+        "claim_ids": [
+          "F09"
+        ]
+      },
+      {
+        "id": "n-portal",
+        "label": "Retailer webstore (nopCommerce)",
+        "type": "public_surface",
+        "evidence_class": "sourced_current",
+        "claim_ids": [
+          "F07"
+        ],
+        "technology_profile": {
+          "application": "nopCommerce",
+          "implementation_family": "C# / .NET",
+          "implementation_basis": "Platform reference; Frontier version to be established",
+          "database_engine": "Microsoft SQL Server",
+          "database_assumption_ref": "H08",
+          "hosting": "to_be_mapped",
+          "control_surfaces": [
+            "Administrative UI and role-based permissions",
+            "Application code/plugins/configuration",
+            "Deployment and database administration"
+          ],
+          "claim_ids": [
+            "F48",
+            "F50",
+            "F51",
+            "F52"
+          ]
+        }
+      },
+      {
+        "id": "n-erp",
+        "label": "ERP / Core Business System — vendor, version and enabled modules TBD",
+        "type": "system_class",
+        "evidence_class": "sourced_historical",
+        "claim_ids": [
+          "F08",
+          "F09",
+          "F25",
+          "F27",
+          "F28"
+        ],
+        "identity_status": {
+          "product": "unknown",
+          "vendor": "unknown",
+          "version": "unknown",
+          "enabled_modules": "unverified",
+          "database_engine": "Microsoft SQL Server",
+          "reception_inquiry": "attempted_unanswered_user_report",
+          "claim_ids": [
+            "F25",
+            "F27",
+            "F47"
+          ],
+          "database_engine_assumption_ref": "H08"
+        },
+        "generic_capability_profile": {
+          "status": "provisional_reference_model",
+          "evidence_class": "cross_product_synthesis",
+          "claim_ids": [
+            "F28"
+          ],
+          "frontier_validation": "none",
+          "capabilities": [
+            {
+              "id": "ERP-G01",
+              "label": "Master data",
+              "reference_examples": [
+                "Customers",
+                "Vendors",
+                "Items",
+                "Locations",
+                "Units of measure"
+              ],
+              "qualification": "Analytical examples of shared business concepts; no common schema or Frontier data ownership is asserted."
+            },
+            {
+              "id": "ERP-G02",
+              "label": "Sales / order-to-cash",
+              "reference_examples": [
+                "Sales orders",
+                "Fulfillment records",
+                "Invoices",
+                "Credits"
+              ]
+            },
+            {
+              "id": "ERP-G03",
+              "label": "Purchasing / procure-to-pay",
+              "reference_examples": [
+                "Purchase orders",
+                "Receipts",
+                "Supplier invoices"
+              ]
+            },
+            {
+              "id": "ERP-G04",
+              "label": "Inventory",
+              "reference_examples": [
+                "Balances",
+                "Locations",
+                "Movements",
+                "Valuation"
+              ]
+            },
+            {
+              "id": "ERP-G05",
+              "label": "Finance / accounting",
+              "reference_examples": [
+                "Accounts receivable",
+                "Accounts payable",
+                "General ledger"
+              ]
+            },
+            {
+              "id": "ERP-G06",
+              "label": "Reporting / inquiry",
+              "reference_examples": [
+                "Operational reports",
+                "Financial reports",
+                "Business inquiries"
+              ]
+            }
+          ],
+          "scope_boundary": "Each capability may be provided by an enabled ERP module, customization or adjacent application. Frontier coverage and ownership are unverified.",
+          "separately_identifiable_domains": [
+            "Warehouse execution / Voxware",
+            "Transportation / Route4Me",
+            "Commerce",
+            "Reporting / analytics"
+          ],
+          "technical_overlap_boundary": "The reference model does not assign common databases, schemas, APIs, adapters, message formats, business rules or exchange timing."
+        },
+        "research_leads": [
+          {
+            "id": "ERP-LEAD01",
+            "literal_token": "E21",
+            "source_ids": [
+              "S49"
+            ],
+            "person_ids": [
+              "P009"
+            ],
+            "claim_ids": [
+              "F32",
+              "F33"
+            ],
+            "source_field": "Nicole Richards skills",
+            "co_listed_tokens": [
+              "Voxware",
+              "Invoicing",
+              "Invoice Processing"
+            ],
+            "proposed_product_expansion": "Enterprise 21 ERP",
+            "expansion_origin": "assistant_proposed_hypothesis",
+            "expansion_verified": false,
+            "vendor": "unknown",
+            "frontier_installation_confirmed": false,
+            "version": "unknown",
+            "database_engine": "unknown",
+            "current_use": "unconfirmed",
+            "connection_to_2015_Voxware_adoption": "not established",
+            "discovery_question_id": "Q18"
+          }
+        ],
+        "research_lead_boundary": "E21 remains an identity lead; product/vendor/version and current interfaces remain unconfirmed. H08 governs the Frontier database working default, including this inquiry."
+      },
+      {
+        "id": "n-supply",
+        "label": "Purchasing / vendors",
+        "type": "business_function",
+        "evidence_class": "posting_claim",
+        "claim_ids": [
+          "F09"
+        ]
+      },
+      {
+        "id": "n-stock",
+        "label": "Warehouse operations",
+        "type": "business_function",
+        "evidence_class": "sourced_current",
+        "claim_ids": [
+          "F06",
+          "F08"
+        ]
+      },
+      {
+        "id": "n-voice",
+        "label": "Voxware VMS / VoxPilot / VoxTempo (historically reported)",
+        "type": "historical_technology",
+        "evidence_class": "sourced_historical",
+        "claim_ids": [
+          "F08",
+          "F18",
+          "F19"
+        ],
+        "component_catalog": {
+          "artifact": "DAT-Frontier-Voxware-Components-And-Features_2026-10-28_v0.1.0.json",
+          "artifact_version": "0.1.0"
+        },
+        "historically_reported_component_ids": [
+          "VX01",
+          "VX02",
+          "VX05",
+          "VX09"
+        ],
+        "product_capabilities_not_established_as_frontier_installation": [
+          "VX03",
+          "VX04",
+          "VX06",
+          "VX07",
+          "VX08",
+          "VX10",
+          "VX11",
+          "VX12"
+        ],
+        "current_installation_validation": "none",
+        "additional_profile_mentions": [
+          {
+            "person_id": "P009",
+            "literal_skill_token": "Voxware",
+            "source_ids": [
+              "S49"
+            ],
+            "claim_ids": [
+              "F32"
+            ],
+            "scope": "Compiled profile skill mention; not new current installation validation."
+          }
+        ]
+      },
+      {
+        "id": "n-delivery",
+        "label": "Transportation / delivery",
+        "type": "business_function",
+        "evidence_class": "sourced_current",
+        "claim_ids": [
+          "F06"
+        ]
+      },
+      {
+        "id": "n-finance",
+        "label": "Accounting / finance",
+        "type": "business_function",
+        "evidence_class": "posting_claim",
+        "claim_ids": [
+          "F09"
+        ]
+      },
+      {
+        "id": "n-report",
+        "label": "Reporting / analytics (implementation UNKNOWN)",
+        "type": "system_class",
+        "evidence_class": "posting_claim",
+        "claim_ids": [
+          "F09"
+        ]
+      },
+      {
+        "id": "n-shop",
+        "label": "Shopify (role mentions; use UNKNOWN)",
+        "type": "platform_mentioned",
+        "evidence_class": "posting_claim",
+        "claim_ids": [
+          "F10"
+        ]
+      },
+      {
+        "id": "n-knowledge",
+        "label": "Decision & knowledge continuity (proposal)",
+        "type": "proposed_capability",
+        "evidence_class": "proposed",
+        "claim_ids": []
+      },
+      {
+        "id": "n-returns",
+        "label": "Returns / credits",
+        "type": "business_process",
+        "evidence_class": "sourced_current",
+        "claim_ids": [
+          "F06",
+          "F11"
+        ]
+      },
+      {
+        "id": "n-route4me",
+        "label": "Route4Me last-mile execution (vendor-reported use)",
+        "type": "vendor_platform",
+        "evidence_class": "vendor_case_study",
+        "claim_ids": [
+          "F16"
+        ]
+      },
+      {
+        "id": "n-sqlserver",
+        "label": "SQL Server — default for all Frontier database instances",
+        "type": "assumed_database_platform",
+        "evidence_class": "steward_directed_working_assumption",
+        "claim_ids": [
+          "F26",
+          "F27",
+          "F47",
+          "F52"
+        ],
+        "installation_status": "working_assumed",
+        "version": "unknown",
+        "system_relationships": "Workload/instance mappings remain discovery targets under H08",
+        "possible_workloads_for_discovery": [
+          "nopCommerce webstore database",
+          "ERP database",
+          "Reporting database",
+          "Integration database",
+          "Internal application database"
+        ],
+        "qualification": "The default does not establish instance count, shared databases, schemas, hosting, versions or a deployed interface.",
+        "assumption_ref": "H08"
+      },
+      {
+        "id": "n-geotab-connect-lead",
+        "label": "Geotab Connect optimization presentation - follow-up lead",
+        "type": "event_or_media_research_lead",
+        "evidence_class": "captured_profile_activity_excerpt",
+        "claim_ids": [
+          "F43"
+        ],
+        "source_ids": [
+          "S55"
+        ],
+        "person_ids": [
+          "P004"
+        ],
+        "installed_system": false,
+        "frontier_Geotab_product_use": "unconfirmed",
+        "video_or_full_post_review": "pending",
+        "contextual_research_targets": [
+          "n-delivery",
+          "n-route4me"
+        ],
+        "contextual_link_qualification": "Inquiry context only; no interface or deployment relationship is asserted."
+      },
+      {
+        "id": "n-wms",
+        "label": "Warehouse Management System (WMS) — separate system unconfirmed",
+        "type": "system_class",
+        "evidence_class": "discovery_candidate",
+        "identity_status": {
+          "separate_product_present": "unconfirmed",
+          "product": "unknown",
+          "vendor": "unknown",
+          "version": "unknown",
+          "relationship_to_erp": "unresolved",
+          "relationship_to_voxware": "unresolved"
+        },
+        "business_role": [
+          "Warehouse inventory and location management",
+          "Warehouse task orchestration",
+          "Fulfillment coordination"
+        ],
+        "scope_boundary": "WMS is a candidate system boundary, not an identified Frontier product or an additional business-process component."
+      }
+    ],
+    "edges": [
+      {
+        "id": "E01",
+        "from": "n-retail",
+        "to": "n-portal",
+        "relationship": "retailer ordering channel",
+        "evidence_class": "sourced_current",
+        "support_id": "F06",
+        "status": "public_or_historical_basis"
+      },
+      {
+        "id": "E02",
+        "from": "n-portal",
+        "to": "n-erp",
+        "relationship": "order/customer/catalog exchange?",
+        "evidence_class": "hypothesis",
+        "support_id": "H02",
+        "status": "unverified_internal"
+      },
+      {
+        "id": "E03",
+        "from": "n-supply",
+        "to": "n-erp",
+        "relationship": "vendor/product/purchasing data?",
+        "evidence_class": "hypothesis",
+        "support_id": "H01",
+        "status": "unverified_internal"
+      },
+      {
+        "id": "E04",
+        "from": "n-erp",
+        "to": "n-voice",
+        "relationship": "historical ERP / Voxware integration",
+        "evidence_class": "sourced_historical",
+        "support_id": "F08",
+        "status": "public_or_historical_basis"
+      },
+      {
+        "id": "E05",
+        "from": "n-voice",
+        "to": "n-stock",
+        "relationship": "historical picking execution",
+        "evidence_class": "sourced_historical",
+        "support_id": "F08",
+        "status": "public_or_historical_basis"
+      },
+      {
+        "id": "E06",
+        "from": "n-stock",
+        "to": "n-delivery",
+        "relationship": "picked order to distribution?",
+        "evidence_class": "hypothesis",
+        "support_id": "H03",
+        "status": "unverified_internal"
+      },
+      {
+        "id": "E07",
+        "from": "n-erp",
+        "to": "n-finance",
+        "relationship": "billing/accounting integration?",
+        "evidence_class": "hypothesis",
+        "support_id": "H01",
+        "status": "unverified_internal"
+      },
+      {
+        "id": "E08",
+        "from": "n-erp",
+        "to": "n-report",
+        "relationship": "reporting feeds?",
+        "evidence_class": "hypothesis",
+        "support_id": "H04",
+        "status": "unverified_internal"
+      },
+      {
+        "id": "E09",
+        "from": "n-sales",
+        "to": "n-erp",
+        "relationship": "sales/service information exchange?",
+        "evidence_class": "hypothesis",
+        "support_id": "H01",
+        "status": "unverified_internal"
+      },
+      {
+        "id": "E10",
+        "from": "n-shop",
+        "to": "n-erp",
+        "relationship": "possible separate commerce integration?",
+        "evidence_class": "hypothesis",
+        "support_id": "H05",
+        "status": "unverified_internal"
+      },
+      {
+        "id": "E11",
+        "from": "n-retail",
+        "to": "n-returns",
+        "relationship": "retail returns process",
+        "evidence_class": "sourced_current",
+        "support_id": "F06",
+        "status": "public_or_historical_basis"
+      },
+      {
+        "id": "E12",
+        "from": "n-returns",
+        "to": "n-finance",
+        "relationship": "credits/reconciliation?",
+        "evidence_class": "hypothesis",
+        "support_id": "H01",
+        "status": "unverified_internal"
+      },
+      {
+        "id": "E13",
+        "from": "n-lead",
+        "to": "n-report",
+        "relationship": "leadership decision information?",
+        "evidence_class": "hypothesis",
+        "support_id": "H04",
+        "status": "unverified_internal"
+      },
+      {
+        "id": "E14",
+        "from": "n-lead",
+        "to": "n-knowledge",
+        "relationship": "goals / decisions (proposed)",
+        "evidence_class": "proposed",
+        "support_id": "H06",
+        "status": "unverified_internal"
+      },
+      {
+        "id": "E15",
+        "from": "n-knowledge",
+        "to": "n-supply",
+        "relationship": "capture rationale and exceptions (proposed)",
+        "evidence_class": "proposed",
+        "support_id": "H06",
+        "status": "unverified_internal"
+      },
+      {
+        "id": "E16",
+        "from": "n-knowledge",
+        "to": "n-stock",
+        "relationship": "preserve process knowledge (proposed)",
+        "evidence_class": "proposed",
+        "support_id": "H06",
+        "status": "unverified_internal"
+      },
+      {
+        "id": "E17",
+        "from": "n-route4me",
+        "to": "n-delivery",
+        "relationship": "route planning / driver delivery documentation (vendor case study)",
+        "evidence_class": "vendor_case_study",
+        "support_id": "F16",
+        "status": "public_vendor_basis; exact ERP interfaces unknown"
+      }
+    ],
+    "assumptions": [
+      {
+        "id": "H01",
+        "hypothesis": "A core ERP likely serves orders, inventory, purchasing, and accounting, perhaps with modules or adjacent systems.",
+        "basis": [
+          "F08",
+          "F09"
+        ],
+        "test": "Identify actual ERP product, ownership, schemas/modules and data boundaries."
+      },
+      {
+        "id": "H02",
+        "hypothesis": "B2B webstore likely exchanges customer/product/order data with internal business systems, but sync direction, method and timing are unknown.",
+        "basis": [
+          "F07",
+          "F09"
+        ],
+        "test": "Trace one sample order end-to-end with permission; identify integration endpoints and reconciliation."
+      },
+      {
+        "id": "H03",
+        "hypothesis": "Warehouse voice-picking data historically moved between ERP and Voxware; current integration and process may have changed.",
+        "basis": [
+          "F08"
+        ],
+        "test": "Observe present pick/pack/ship workflow and validate current software/vendor state."
+      },
+      {
+        "id": "H04",
+        "hypothesis": "Sales, purchasing, warehouse, and accounting may use reports with overlapping definitions or manual reconciliation. This is a generic discovery hypothesis, not an allegation of poor data.",
+        "basis": [
+          "F09"
+        ],
+        "test": "Collect report catalog, lineage, refresh methods, audiences and exceptions with department owners."
+      },
+      {
+        "id": "H05",
+        "hypothesis": "Shopify may represent a distinct commerce surface or partner integration while the public B2B store uses nopCommerce. The relationship is unknown.",
+        "basis": [
+          "F07",
+          "F10"
+        ],
+        "test": "Ask which web properties or integrations use Shopify and who owns them."
+      },
+      {
+        "id": "H06",
+        "hypothesis": "Long-tenured operational knowledge, exceptions, and historical decisions could benefit from consented, access-controlled continuity artifacts.",
+        "basis": [
+          "F04",
+          "F05"
+        ],
+        "test": "Ask about transition/handoff pain points; confirm appetite, permissions, retention and sensitivity."
+      },
+      {
+        "id": "H07",
+        "hypothesis": "Priority sponsorship may sit with operational leadership rather than a conventional software hierarchy.",
+        "basis": [
+          "F09",
+          "F12"
+        ],
+        "test": "Identify hiring manager, budget owner, decision rights and escalation for competing work requests."
+      },
+      {
+        "id": "H08",
+        "hypothesis": "Use Microsoft SQL Server as the default assumption for all Frontier database instances; Frontier may correct exceptions.",
+        "classification": "steward_directed_working_assumption",
+        "operating_default": true,
+        "basis": [
+          "F26",
+          "F47"
+        ],
+        "source_ids": [
+          "S58"
+        ],
+        "test": "Ask Frontier to identify exceptions while mapping actual instances, database names, versions and workload ownership."
+      }
+    ],
+    "notes": "Generic dependency hypotheses are marked individually. Neither nodes nor edges establish a validated Frontier architecture. Route4Me addition is a vendor-reported current technology association, not proof of exact system-to-system architecture. Update 2026-10-28: VoxTempo is historically associated with Frontier; its 2021 introduction is not backdated to 2015. Internal component relationships in the catalog are explanatory, not additional Frontier system-to-system edges. Update 2026-10-30: the generic ERP profile is a candidate reference model, not a validated installed module list. SQL Server is added from the job posting only. The ERP-to-SQL Server relationship remains a discovery question and is not a new topology edge. Historical E04 remains historical; no current interface validation occurred. People intake update: E21 is preserved as a literal skill token and an unverified identity lead under the existing ERP node. Enterprise 21 is only a proposed expansion. No nodes or edges were added and no current ERP database or interface was confirmed. Update 2026-11-04: H08 is the single operative SQL Server default for all Frontier database instances. Historical database-unknown notes above remain provenance. No SQL Server instance, common database or production integration edge is invented by this update.",
+    "references": [
+      {
+        "artifact": "DAT-Frontier-Research-Evidence_2026-11-04_v0.8.0.json",
+        "artifact_version": "0.8.0"
+      },
+      {
+        "artifact": "DAT-Frontier-Voxware-Components-And-Features_2026-10-28_v0.1.0.json",
+        "artifact_version": "0.1.0"
+      },
+      {
+        "artifact": "DAT-Frontier-Discovery-Questions_2026-11-04_v0.6.0.json",
+        "artifact_version": "0.6.0"
+      },
+      {
+        "artifact": "DAT-Frontier-People-And-Profiles_2026-10-31_v0.2.0.json",
+        "artifact_version": "0.2.0"
+      },
+      {
+        "artifact": "DAT-Frontier-Functions-And-Stakeholders_2026-10-31_v0.3.0.json",
+        "artifact_version": "0.3.0"
+      }
+    ],
+    "unresolved_relationships": [
+      {
+        "id": "UR01",
+        "from": "n-sqlserver",
+        "to": "n-erp",
+        "question": "Which SQL Server instance/database serves the ERP, and how does it relate to webstore, reporting and integration workloads?",
+        "status": "unverified",
+        "claim_ids": [
+          "F26",
+          "F27",
+          "F47"
+        ],
+        "represented_as_topology_edge": false,
+        "discovery_question_id": "Q17",
+        "assumption_ref": "H08"
+      },
+      {
+        "id": "UR02",
+        "from": "n-erp",
+        "to": "n-wms",
+        "related_system_id": "n-voice",
+        "question": "Does Frontier operate a distinct WMS, use ERP warehouse-management functionality, or use Voxware management capabilities? What are the actual ERP, WMS and Voxware integration boundaries?",
+        "status": "open_discovery",
+        "evidence_class": "hypothesis",
+        "represented_as_topology_edge": false,
+        "priority": "high",
+        "current_known": "Voxware was previously identified; separate WMS presence and interface topology have not been established."
+      }
+    ],
+    "new_research_leads": [
+      {
+        "id": "MEDIA-LEAD01",
+        "node_id": "n-geotab-connect-lead",
+        "claim_id": "F43",
+        "next_capture": "Expanded repost and original optimization presentation/video",
+        "question_id": "Q19",
+        "implementation_edges_added": false
+      }
+    ],
+    "database_workload_inquiry": {
+      "assumption_ref": "H08",
+      "targets": [
+        "nopCommerce",
+        "ERP",
+        "Reporting",
+        "Integrations",
+        "Internal applications"
+      ],
+      "capture": [
+        "Instance/database mapping",
+        "Hosting and versions",
+        "Owners and access",
+        "Data authority",
+        "Exchange contracts and schedules",
+        "Schemas, objects and related jobs/processes",
+        "Authoritative inventory versus synchronized copies and derived measures",
+        "Support/failure ownership and recovery verification"
+      ],
+      "existing_instance_inventory": null
+    },
+    "nopcommerce_reference_architecture": {
+      "scope": "Platform reference model, not Frontier deployment topology",
+      "layers": [
+        {
+          "layer": "Presentation",
+          "components": [
+            "Storefront",
+            "Administration"
+          ]
+        },
+        {
+          "layer": "Business services",
+          "components": [
+            "Nop.Services"
+          ]
+        },
+        {
+          "layer": "Persistence",
+          "components": [
+            "Nop.Data",
+            "SQL Server under H08"
+          ]
+        }
+      ],
+      "source_claim_ids": [
+        "F50",
+        "F51",
+        "F52"
+      ]
+    },
+    "focused_discovery": {
+      "priority": "nopCommerce ERP exchanges and actual reporting",
+      "scope": "Develop a coherent source-qualified component model; use one SKU/order/report to validate business meaning and interfaces when access permits.",
+      "known_public_steps": [
+        "Retailer inquiry",
+        "Office-mediated request for webstore access",
+        "First-login terms acceptance"
+      ],
+      "unknown_handoffs": [
+        "Inquiry review and approval",
+        "Customer-record creation and authority",
+        "Portal user provisioning",
+        "ERP customer/order mapping"
+      ],
+      "source_claim_ids": [
+        "F48",
+        "F49",
+        "F53",
+        "F55",
+        "F56",
+        "F57",
+        "F58",
+        "F59",
+        "F60",
+        "F61",
+        "F62",
+        "F63"
+      ],
+      "priority_order": [
+        "ERP exchanges",
+        "Actual reports and their coverage/meaning",
+        "Support and failure handling",
+        "Configuration, inventory authority and SQL topology",
+        "Onboarding/access as relevant"
+      ],
+      "discovery_depth": {
+        "classification": "steward-directed practical discovery boundary",
+        "source_quote_ref": "S66/U09",
+        "intended_outcome": "A coherent, defensible conceptual model of Frontier business/system relationships with explicit evidence, assumptions, unresolved interfaces and validation questions.",
+        "useful_now": [
+          "Explain the component business purpose and context.",
+          "Identify plausible relationships, ownership boundaries and failure paths.",
+          "Connect discovery topics to the advertised work.",
+          "Let leadership choose a business priority to explore together."
+        ],
+        "sufficient_for_this_pass": "A compact reviewable model, a source/evidence ledger and a small prioritized question set. Concrete internal answers and implementation can follow with Frontier priorities and permissions.",
+        "maturity_boundary": "Conceptual coherence does not verify deployment, prove an internal defect, approve a design, or establish business priority."
+      }
+    },
+    "focused_discovery_history": [
+      {
+        "priority": "Retailer onboarding and nopCommerce webstore access",
+        "scope": "Understand what the webstore is, where it sits, how it is controlled, its SQL Server data and ERP exchanges.",
+        "known_public_steps": [
+          "Retailer inquiry",
+          "Office-mediated request for webstore access",
+          "First-login terms acceptance"
+        ],
+        "unknown_handoffs": [
+          "Inquiry review and approval",
+          "Customer-record creation and authority",
+          "Portal user provisioning",
+          "ERP customer/order mapping"
+        ],
+        "source_claim_ids": [
+          "F48",
+          "F49",
+          "F53",
+          "F54"
+        ]
+      }
+    ],
+    "configuration_discovery": {
+      "classification": "assistant organization of steward-directed discovery category",
+      "source_quote_ref": "S66/U07",
+      "scope": "Configuration is a category in the component package. It does not imply every setting is in the nopCommerce Configuration menu or that content itself is configuration.",
+      "categories": [
+        "Hosting and deployed application version",
+        "SQL Server hosts, instances, databases, schemas and access",
+        "Media, documents and storage locations",
+        "Plugins, source changes and deployment",
+        "ERP interfaces, identifiers and synchronization",
+        "Users, roles, approval and permissions",
+        "Reporting connections, definitions and scheduled processing",
+        "Operational support, monitoring, escalation and recovery"
+      ],
+      "content_boundary": "Product records, inventory, images and documents are data/content governed by configuration; their authoritative or physical locations remain to be discovered.",
+      "Frontier_inventory": []
+    },
+    "inventory_conceptual_model": {
+      "classification": "candidate conceptual model; not Frontier-verified topology",
+      "source_quote_ref": "S66/U08",
+      "principle": "Identify one authoritative owner for each inventory fact or measure, while allowing controlled copies, events and derived views.",
+      "candidate_roles": [
+        {
+          "component": "ERP",
+          "role": "Candidate authority for stock, receipts, adjustments, allocation and shipment records.",
+          "status": "hypothesis"
+        },
+        {
+          "component": "nopCommerce",
+          "role": "May keep synchronized stock/availability or retrieve it through an interface.",
+          "status": "hypothesis"
+        },
+        {
+          "component": "Warehouse / voice workflow",
+          "role": "May capture activities that update inventory authority.",
+          "status": "hypothesis; current implementation unconfirmed"
+        },
+        {
+          "component": "Reporting",
+          "role": "May read operational records or retain snapshots and derived measures.",
+          "status": "hypothesis"
+        }
+      ],
+      "measure_distinctions": [
+        "On-hand quantity",
+        "Reserved or allocated quantity",
+        "Available-to-order quantity",
+        "Location or warehouse scope",
+        "Damaged or otherwise restricted stock",
+        "Snapshot time and synchronization freshness"
+      ],
+      "catalog_coverage": "Do not infer that every Frontier item is published in the webstore.",
+      "validation_walkthrough": "Trace one SKU at one warehouse through on-hand quantity, reservations, displayed availability, order and shipment; capture authority, copies, mechanism, timing, failures and reconciliation.",
+      "confirmed_Frontier_sources": []
+    },
+    "sql_topology_discovery": {
+      "classification": "discovery structure; no physical inventory obtained",
+      "assumption_ref": "H08",
+      "hierarchy": [
+        "Host / server",
+        "SQL Server instance",
+        "Database",
+        "Schema",
+        "Table / view / procedure"
+      ],
+      "associated_processing": [
+        "SQL Agent or other scheduled jobs",
+        "Application services",
+        "Integration processes",
+        "Report datasets and refreshes"
+      ],
+      "capture_fields": [
+        "environment",
+        "host",
+        "instance",
+        "database",
+        "schema",
+        "object",
+        "application/workload",
+        "business owner",
+        "technical owner",
+        "read/write role",
+        "source-of-truth responsibility",
+        "upstream/downstream references",
+        "refresh or schedule",
+        "authorized access"
+      ],
+      "scope_rule": "Co-location in an instance, database or schema does not by itself establish common data authority. Technical ownership and business authority must be mapped separately.",
+      "inventory": []
+    },
+    "nopcommerce_current_profile": {
+      "artifact": "DAT-Frontier-nopCommerce-Component_2026-11-04_v0.3.0.json",
+      "artifact_version": "0.3.0",
+      "relative_to_frontier": "Components/nopCommerce/25_DAT/DAT-Frontier-nopCommerce-Component_2026-11-04_v0.3.0.json",
+      "canonical_path": "S:\\Brain-FrontierDistribution\\Components\\nopCommerce\\25_DAT\\DAT-Frontier-nopCommerce-Component_2026-11-04_v0.3.0.json"
+    },
+    "enterprise_navigation": {
+      "purpose": "Navigate from Frontier enterprise systems and operational areas to business processes, business components and verified internal implementation. This is an additive index, not a rewrite of topology.",
+      "layers": [
+        "Enterprise systems architecture",
+        "Operational area",
+        "Business process",
+        "Business component",
+        "Internal implementation/test harness"
+      ],
+      "systems_inventory_source": "DAT-Frontier-Working-Systems-Map_2026-11-09_v0.8.1.json",
+      "research_component_registry_source": "DAT-Frontier-Component-Registry_2026-11-04_v0.2.0.json",
+      "business_system_vs_business_component": "System/platform inventory describes potential software boundaries; business components describe capabilities; C# classes implement the synthetic process.",
+      "processes": [
+        {
+          "id": "BP-OD",
+          "name": "Order-to-Dispatch",
+          "status": "integration_verified",
+          "integration_harness": "Frontier.EndToEnd.Tests",
+          "checks": "29/29",
+          "sequence": [
+            "BC-02",
+            "BC-03",
+            "BC-04",
+            "BC-05",
+            "BC-06",
+            "BC-07",
+            "BC-08"
+          ],
+          "supporting_capabilities": [
+            "BC-01"
+          ]
+        },
+        {
+          "id": "BP-DD",
+          "name": "Dispatch-to-Delivery",
+          "status": "stage3_1_integration_verified",
+          "upstream_process": "BP-OD",
+          "upstream_business_component": "BC-08",
+          "operational_area": "Transportation / Distribution",
+          "business_software_application": "Route4Me",
+          "business_software_node_id": "n-route4me",
+          "delivery_model_scope": "Stage 3.1 delivery execution and confirmation",
+          "sequence": [
+            "BC-09"
+          ],
+          "candidate_components_not_approved_boundaries": [
+            "Delivery Order Creation",
+            "Route Planning",
+            "Load Verification",
+            "Route Execution",
+            "Delivery Confirmation",
+            "Delivery Exception Handling",
+            "Delivery Reconciliation"
+          ],
+          "integration_harness": "Frontier.Delivery.Integration.Tests",
+          "checks": "13/13",
+          "notes": "BC-09 is the Stage 3.1 modeled slice (delivery execution plus confirmation/exception); no assertion that route planning or load verification occurs after dispatch. The seven originally named candidates do not constitute seven approved software boundaries."
+        }
+      ],
+      "operational_areas": [
+        {
+          "name": "Sales / Order Management",
+          "map_node_id": "n-sales",
+          "implementation_coverage": "Order Intake",
+          "coverage_status": "stage2_implemented"
+        },
+        {
+          "name": "Warehouse Operations",
+          "map_node_id": "n-stock",
+          "implementation_coverage": "Inventory Availability, Pick Planning, Pick Execution, Packing",
+          "coverage_status": "stage2_implemented"
+        },
+        {
+          "name": "Transportation / Distribution",
+          "map_node_id": "n-delivery",
+          "implementation_coverage": "Shipping, Dispatch, Delivery Execution and Confirmation",
+          "coverage_status": "stage2_plus_stage3_1_verified",
+          "business_software_applications": [
+            {
+              "name": "Route4Me",
+              "node_id": "n-route4me",
+              "role": "delivery execution, delivery confirmation and exception-handling capability; shipping/dispatch relationship to validate",
+              "evidence_class": "vendor_case_study_and_executable_model"
+            },
+            {
+              "name": "ERP / Core Business System",
+              "node_id": "n-erp",
+              "role": "order/shipment records and proposed delivery-status consumption; product/vendor unknown",
+              "evidence_class": "reference_model"
+            }
+          ]
+        },
+        {
+          "name": "Purchasing / Procurement",
+          "map_node_id": "n-supply",
+          "implementation_coverage": "No executable process slice yet",
+          "coverage_status": "discovery_only"
+        },
+        {
+          "name": "Accounting / Finance",
+          "map_node_id": "n-finance",
+          "implementation_coverage": "No executable process slice yet",
+          "coverage_status": "discovery_only"
+        },
+        {
+          "name": "Customer Service",
+          "map_node_id": "n-sales",
+          "implementation_coverage": "No separate executable process slice yet",
+          "coverage_status": "discovery_only"
+        },
+        {
+          "name": "Executive / Reporting / BI",
+          "map_node_id": "n-report",
+          "implementation_coverage": "No executable process slice yet",
+          "coverage_status": "discovery_only"
+        },
+        {
+          "name": "Integrations / APIs",
+          "map_node_id": "n-erp",
+          "implementation_coverage": "Identity resolution and webstore source contracts",
+          "coverage_status": "partial"
+        },
+        {
+          "name": "Infrastructure / SQL",
+          "map_node_id": "n-sqlserver",
+          "implementation_coverage": "No executable infrastructure integration",
+          "coverage_status": "discovery_only"
+        },
+        {
+          "name": "Security / Access",
+          "map_node_id": null,
+          "implementation_coverage": "No executable process slice yet",
+          "coverage_status": "discovery_only"
+        },
+        {
+          "name": "Support / Incidents",
+          "map_node_id": null,
+          "implementation_coverage": "No executable process slice yet",
+          "coverage_status": "discovery_only"
+        },
+        {
+          "name": "Governance / Decisions",
+          "map_node_id": "n-knowledge",
+          "implementation_coverage": "Governed discovery and implementation artifacts",
+          "coverage_status": "artifact_coverage"
+        }
+      ],
+      "business_components": [
+        {
+          "id": "BC-01",
+          "name": "Product Identity Resolution",
+          "operational_area": "Cross-cutting / Integration",
+          "csharp_class": "ProductIdentityResolver",
+          "production_project": "Frontier.Identity",
+          "test_harness": "Frontier.Identity.Tests",
+          "reported_tests": "20/20",
+          "related_system_node_ids": [
+            "n-erp",
+            "n-portal"
+          ],
+          "relationship_class": "candidate_placement_not_confirmed_topology",
+          "note": "Supporting capability; not a chronological fulfillment step"
+        },
+        {
+          "id": "BC-02",
+          "name": "Order Intake",
+          "operational_area": "Sales / Order Management",
+          "csharp_class": "OrderIntake",
+          "production_project": "Frontier.Orders",
+          "test_harness": "Frontier.Orders.Tests",
+          "reported_tests": "11/11",
+          "related_system_node_ids": [
+            "n-portal",
+            "n-erp"
+          ],
+          "relationship_class": "candidate_placement_not_confirmed_topology",
+          "note": "Stage 2 step 1"
+        },
+        {
+          "id": "BC-03",
+          "name": "Inventory Availability",
+          "operational_area": "Warehouse Operations",
+          "csharp_class": "InventoryAvailability",
+          "production_project": "Frontier.Orders",
+          "test_harness": "Frontier.Inventory.Tests",
+          "reported_tests": "10/10",
+          "related_system_node_ids": [
+            "n-erp",
+            "n-wms",
+            "n-stock"
+          ],
+          "relationship_class": "candidate_placement_not_confirmed_topology",
+          "note": "Stage 2 step 2"
+        },
+        {
+          "id": "BC-04",
+          "name": "Pick Planning",
+          "operational_area": "Warehouse Operations",
+          "csharp_class": "PickPlanning",
+          "production_project": "Frontier.Orders",
+          "test_harness": "Frontier.Picking.Tests",
+          "reported_tests": "13/13",
+          "related_system_node_ids": [
+            "n-wms",
+            "n-stock",
+            "n-voice"
+          ],
+          "relationship_class": "candidate_placement_not_confirmed_topology",
+          "note": "Stage 2 step 3"
+        },
+        {
+          "id": "BC-05",
+          "name": "Pick Execution",
+          "operational_area": "Warehouse Operations",
+          "csharp_class": "PickExecution",
+          "production_project": "Frontier.Orders",
+          "test_harness": "Frontier.PickExecution.Tests",
+          "reported_tests": "23/23",
+          "related_system_node_ids": [
+            "n-wms",
+            "n-voice",
+            "n-stock"
+          ],
+          "relationship_class": "candidate_placement_not_confirmed_topology",
+          "note": "Stage 2 step 4"
+        },
+        {
+          "id": "BC-06",
+          "name": "Packing",
+          "operational_area": "Warehouse Operations",
+          "csharp_class": "Packing",
+          "production_project": "Frontier.Orders",
+          "test_harness": "Frontier.Packing.Tests",
+          "reported_tests": "24/24",
+          "related_system_node_ids": [
+            "n-wms",
+            "n-stock"
+          ],
+          "relationship_class": "candidate_placement_not_confirmed_topology",
+          "note": "Stage 2 step 5"
+        },
+        {
+          "id": "BC-07",
+          "name": "Shipping",
+          "operational_area": "Transportation / Distribution",
+          "csharp_class": "Shipping",
+          "production_project": "Frontier.Orders",
+          "test_harness": "Frontier.Shipping.Tests",
+          "reported_tests": "27/27 shared with dispatch",
+          "related_system_node_ids": [
+            "n-erp",
+            "n-wms",
+            "n-delivery"
+          ],
+          "relationship_class": "candidate_placement_not_confirmed_topology",
+          "note": "Stage 2 step 6"
+        },
+        {
+          "id": "BC-08",
+          "name": "Dispatch",
+          "operational_area": "Transportation / Distribution",
+          "csharp_class": "Shipping",
+          "production_project": "Frontier.Orders",
+          "test_harness": "Frontier.Shipping.Tests",
+          "reported_tests": "27/27 shared with shipping",
+          "related_system_node_ids": [
+            "n-erp",
+            "n-wms",
+            "n-delivery"
+          ],
+          "relationship_class": "candidate_placement_not_confirmed_topology",
+          "note": "Stage 2 step 7"
+        },
+        {
+          "id": "BC-09",
+          "name": "Delivery Execution and Confirmation",
+          "operational_area": "Transportation / Distribution",
+          "business_process": "BP-DD",
+          "business_software_application": "Route4Me",
+          "csharp_class": "Delivery (Delivery.cs)",
+          "production_project": "Frontier.Delivery",
+          "test_harness": "Frontier.Delivery.Tests",
+          "reported_tests": "22/22",
+          "integration_harness": "Frontier.Delivery.Integration.Tests",
+          "integration_reported_tests": "13/13",
+          "related_system_node_ids": [
+            "n-route4me",
+            "n-delivery",
+            "n-erp"
+          ],
+          "relationship_class": "modeled_business_software_boundary_not_confirmed_live_interface",
+          "upstream_business_component": "BC-08",
+          "note": "Stage 3.1: consume actual Stage 2 DISPATCH harness JSON into Frontier.Delivery; record terminal delivered or exception outcome with proof, idempotence and immutable original quantities. New code does not call Route4Me or ERP APIs."
+        }
+      ],
+      "internal_project_structure": {
+        "Frontier.Identity": [
+          "ProductIdentityResolver",
+          "IdentityCatalog"
+        ],
+        "Frontier.Orders": [
+          "OrderIntake",
+          "InventoryAvailability",
+          "PickPlanning",
+          "PickExecution",
+          "Packing",
+          "Shipping"
+        ],
+        "Frontier.Contracts": [
+          "IProductIdentityResolver"
+        ],
+        "Frontier.Domain": [
+          "Entities"
+        ],
+        "Frontier.EndToEnd.Tests": "integration runner (test project)",
+        "Frontier.Delivery": [
+          "Delivery (Delivery.cs)"
+        ],
+        "Frontier.Delivery.Tests": "22 assertions (test harness)",
+        "Frontier.Delivery.Integration.Tests": "13 assertions consuming Frontier.Shipping.Tests DISPATCH output",
+        "Verify-Frontier-Stage3.1-Integrated.ps1": "combined verification runner"
+      },
+      "verification": {
+        "baseline_harness_assertions": 128,
+        "end_to_end_assertions": 29,
+        "reported_total": 192,
+        "result": "all_passed_steward_console_transcript",
+        "evidence": "User-supplied Freya Stage 3.1 combined-run transcript Pasted text(3).txt, lines 1-259, November 9 2026: 157/157 + 22/22 + 13/13.",
+        "scope": "Stage 1/2, Stage 3.1 and output-to-library integration verified; external vendor API exchange not executed.",
+        "stage3_1_harness_assertions": 22,
+        "stage3_1_integration_assertions": 13,
+        "git": {
+          "commit": "ab1358c",
+          "branch": "main",
+          "mimir_main": "synchronized",
+          "github_main": "synchronized",
+          "working_tree": "clean",
+          "provenance": "User-supplied Git console transcript (commit, pushes, status, log)."
+        }
+      },
+      "discovery_items": [
+        {
+          "id": "UR02",
+          "topic": "ERP ↔ WMS ↔ Voxware boundary",
+          "status": "open",
+          "reference": "content.unresolved_relationships"
+        }
+      ],
+      "source_precision": {
+        "classes": "Inspected Git snapshot FrontierDistribution-8c70cb7e142f.zip, src tree",
+        "harnesses": "User-provided full regression output",
+        "system inventory": "SBPKG Working Systems Map v0.8.1",
+        "system research registry": "SBPKG Component Registry v0.2.0",
+        "stage3_1": "User-provided test and Git transcripts 2026-11-09, plus Stage 3.1 code packaged by assistant; no independent runtime execution by assistant."
+      },
+      "non_goals": [
+        "Do not infer a distinct WMS deployment",
+        "Do not interpret research Component lanes as C# projects",
+        "Do not add asserted system integration topology edges",
+        "No changes to Stage 2 code"
+      ],
+      "business_software_applications": [
+        {
+          "name": "nopCommerce",
+          "node_id": "n-portal",
+          "process_roles": [
+            "webstore order submission"
+          ],
+          "status": "sourced_frontier_webstore"
+        },
+        {
+          "name": "ERP / Core Business System",
+          "node_id": "n-erp",
+          "process_roles": [
+            "order/shipment reference model",
+            "proposed delivery-status consumer"
+          ],
+          "status": "vendor_unknown"
+        },
+        {
+          "name": "Voxware",
+          "node_id": "n-voice",
+          "process_roles": [
+            "warehouse voice execution capabilities"
+          ],
+          "status": "historically_reported"
+        },
+        {
+          "name": "Route4Me",
+          "node_id": "n-route4me",
+          "process_roles": [
+            "last-mile delivery execution",
+            "delivery confirmation",
+            "proof of delivery",
+            "delivery exceptions",
+            "shipping/dispatch-related capabilities require precise discovery"
+          ],
+          "status": "vendor_reported_and_executable_model"
+        }
+      ],
+      "software_relationships_stage3_1": [
+        {
+          "from": "ERP / Shipping model",
+          "to": "Route4Me / Delivery model",
+          "business_event": "shipment Dispatched -> delivery outcome recorded",
+          "handoff": "actual Frontier.Shipping.Tests DISPATCH JSON parsed by Frontier.Delivery.Integration.Tests",
+          "preserved_identifiers": [
+            "ShipmentId",
+            "SalesOrderId",
+            "WarehouseId",
+            "ProductId",
+            "Quantity"
+          ],
+          "result": "13/13 integration assertions passed",
+          "interface_status": "executable_test_output_handoff_not_live_vendor_interface"
+        },
+        {
+          "from": "Route4Me / Delivery model",
+          "to": "ERP / Customer Service",
+          "business_event": "delivery status/proof-of-delivery/exception visibility",
+          "interface_status": "conceptual_downstream_relationship_not_implemented"
+        }
+      ],
+      "chronological_progression": [
+        {
+          "stage": "Stage 1",
+          "business_capability": "Product Identity Resolution",
+          "process": "supporting cross-cutting capability",
+          "state": "complete"
+        },
+        {
+          "stage": "Stage 2",
+          "business_process": "BP-OD",
+          "final_component": "BC-08 — Dispatch",
+          "state": "157/157"
+        },
+        {
+          "stage": "Stage 3.1",
+          "business_process": "BP-DD",
+          "component": "BC-09 — Delivery Execution and Confirmation",
+          "state": "22/22 plus 13/13 integration"
+        },
+        {
+          "stage": "downstream",
+          "business_process": "Delivery reconciliation / customer service / finance",
+          "state": "not yet implemented"
+        }
+      ],
+      "order_origination_context": {
+        "precedes": "BC-02 Order Intake",
+        "origin_application": "nopCommerce",
+        "central_order_application": "ERP",
+        "implementation_component": "Frontier.Orders",
+        "model_status": "approved_working_mapping",
+        "scope": "Contextual beginning of chronology; no new implemented Business Component or changed BP-OD verified sequence"
+      }
+    },
+    "architecture_component_conventions": {
+      "convention_id": "/COMPONENTS",
+      "status": "steward_agreed",
+      "scope": "Frontier business-application and implementation architecture; conversation switch provides its readable register",
+      "terminology": {
+        "Business System": "Business operation spanning people, processes, information and technology (example: Transportation / Distribution).",
+        "Business Application": "Software product supporting business operations; known/named examples nopCommerce, Voxware and Route4Me; ERP vendor unidentified.",
+        "Business Process": "Chronological sequence of business activities (example: Dispatch-to-Delivery).",
+        "Business Component": "Discrete business capability or responsibility (example: Delivery Confirmation).",
+        "Implementation Component": "Locally created software module implementing or modeling business behavior (example: Frontier.Delivery).",
+        "Integration": "Relationship connecting two or more Business Applications for information exchange or coordinated activity.",
+        "Interface": "Defined communication boundary exposed or consumed by an application.",
+        "Integration Contract": "Data and behavior agreement at an integration boundary.",
+        "Adapter / Connector": "Custom code translating between application interfaces/contracts where necessary.",
+        "Integration Service": "Executable intermediary performing synchronization, translation, orchestration, retries, or other coordination when required."
+      },
+      "rules": [
+        "Every Implementation Component has exactly one primary parent Business Application in the logical architecture.",
+        "An Implementation Component may interact with multiple other Business Applications through Integrations.",
+        "Primary logical ownership does not assert code is physically deployed inside a vendor Business Application.",
+        "Business Applications may support multiple Business Processes and Business Components.",
+        "Integrations connect Business Applications; Interfaces and Contracts specify the boundary; adapters or services implement intermediary custom behavior only where needed.",
+        "Do not invent missing Business Applications to satisfy ownership; unresolved ownership stays unresolved pending steward decision.",
+        "Test, debug and demonstration outputs must identify relevant Business Application, Business System, Business Process, Business Component, Integration context, and Implementation Component as known; level of detail is deferred.",
+        "A Business Application may be present without any dedicated Implementation Component; do not manufacture an implementation solely to fill a solution folder.",
+        "Order origin application identifiers and ERP sales-order identity are distinct and must remain correlated across application boundaries."
+      ],
+      "business_applications": [
+        {
+          "name": "ERP",
+          "vendor": "unknown",
+          "certainty": "presence identified; vendor unknown"
+        },
+        {
+          "name": "nopCommerce",
+          "certainty": "identified"
+        },
+        {
+          "name": "Voxware",
+          "certainty": "identified; deployed modules unconfirmed"
+        },
+        {
+          "name": "Route4Me",
+          "certainty": "identified; exact Frontier integration implementation unconfirmed"
+        }
+      ],
+      "implementation_ownership_register": [
+        {
+          "component": "Frontier.Orders",
+          "candidate_parent": "ERP",
+          "decision": "steward-approved working mapping, 2026-11-10; ERP primary parent; Frontier production implementation unverified"
+        },
+        {
+          "component": "Frontier.Inventory",
+          "candidate_parent": "ERP",
+          "decision": "proposed; not yet steward-approved"
+        },
+        {
+          "component": "Frontier.Picking",
+          "candidate_parent": "Voxware",
+          "decision": "proposed; not yet steward-approved"
+        },
+        {
+          "component": "Frontier.PickExecution",
+          "candidate_parent": "Voxware",
+          "decision": "proposed; not yet steward-approved"
+        },
+        {
+          "component": "Frontier.Packing",
+          "candidate_parent": "Voxware",
+          "decision": "proposed; not yet steward-approved"
+        },
+        {
+          "component": "Frontier.Shipping",
+          "candidate_parent": "Route4Me",
+          "decision": "working mapping; logical model, not vendor-deployed code"
+        },
+        {
+          "component": "Frontier.Delivery",
+          "candidate_parent": "Route4Me",
+          "decision": "working mapping; logical model, not vendor-deployed code"
+        },
+        {
+          "component": "Frontier.Identity",
+          "candidate_parent": null,
+          "decision": "unresolved; shared identity spans multiple applications"
+        },
+        {
+          "component": "Frontier.Contracts",
+          "candidate_parent": null,
+          "decision": "unresolved; supporting implementation module"
+        },
+        {
+          "component": "Frontier.Domain",
+          "candidate_parent": null,
+          "decision": "unresolved; supporting implementation module"
+        }
+      ],
+      "integration_examples": [
+        {
+          "applications": [
+            "ERP",
+            "Route4Me"
+          ],
+          "relation": "Shipment/dispatch handoff and delivery outcome",
+          "implementation_status": "Modeled; actual Frontier interface not verified"
+        },
+        {
+          "applications": [
+            "nopCommerce",
+            "ERP"
+          ],
+          "relation": "Online order origin to order management",
+          "implementation_status": "Modeled; actual Frontier interface not verified"
+        },
+        {
+          "applications": [
+            "ERP",
+            "Voxware"
+          ],
+          "relation": "Warehouse execution/fulfillment",
+          "implementation_status": "Modeled; actual Frontier interface not verified"
+        }
+      ],
+      "open_decisions": [
+        "Determine exactly one primary parent for shared implementation components (Identity, Contracts, Domain) without inventing an application.",
+        "Confirm remaining ERP/Voxware candidate ownerships; Frontier.Orders ERP primary parent is approved for the working model.",
+        "Confirm vendor-side interface and middleware deployment details only when evidence is available.",
+        "Identify Frontier production order-entry channels, ERP vendor, and actual nopCommerce-to-ERP transport/contracts when evidence becomes available."
+      ]
+    },
+    "order_origination_working_model": {
+      "decision_status": "steward_approved_working_model",
+      "approval_date": "2026-11-10",
+      "scope": "Business Application responsibilities and most-likely order origination routes; not production interface verification or software implementation authorization",
+      "application_responsibilities": [
+        {
+          "business_application": "nopCommerce",
+          "application_node_id": "n-portal",
+          "responsibilities": [
+            "Customer storefront checkout/order placement",
+            "nopCommerce administrative order management"
+          ],
+          "model_status": "approved_working_mapping",
+          "frontier_usage_of_admin_entry": "unverified"
+        },
+        {
+          "business_application": "ERP",
+          "application_node_id": "n-erp",
+          "responsibilities": [
+            "Central operational sales-order authority",
+            "Acceptance and management of source orders",
+            "Potential direct entry by sales/customer service",
+            "Downstream invoicing and receivables"
+          ],
+          "model_status": "approved_working_mapping",
+          "frontier_direct_entry": "unverified"
+        },
+        {
+          "business_application": "Voxware",
+          "application_node_id": "n-voice",
+          "responsibilities": [
+            "Warehouse fulfillment and picking workflows"
+          ],
+          "model_status": "approved_working_mapping",
+          "exact_frontier_modules": "unverified"
+        },
+        {
+          "business_application": "Route4Me",
+          "application_node_id": "n-route4me",
+          "responsibilities": [
+            "Distribution routing, dispatch and delivery execution/confirmation"
+          ],
+          "model_status": "approved_working_mapping",
+          "actual_interface_mechanisms": "unverified"
+        }
+      ],
+      "likely_order_origins": [
+        {
+          "origin": "nopCommerce storefront",
+          "entry": "Customer checkout",
+          "handoff_to": "ERP order acceptance",
+          "status": "approved_working_model"
+        },
+        {
+          "origin": "nopCommerce admin",
+          "entry": "Administrative order management / possible entry",
+          "handoff_to": "ERP order acceptance",
+          "status": "candidate_channel_frontier_usage_unverified"
+        },
+        {
+          "origin": "ERP direct entry",
+          "entry": "Sales/customer-service order entry",
+          "handoff_to": "ERP sales order processing",
+          "status": "candidate_channel_frontier_usage_unverified"
+        }
+      ],
+      "chronological_handoff": [
+        "Source application creates or provides an order",
+        "ERP accepts/maintains central operational sales order",
+        "Warehouse fulfillment (Voxware-associated)",
+        "Shipping and delivery (Route4Me-associated)",
+        "ERP downstream financial processing"
+      ],
+      "identity_correlation": {
+        "source_order_example": "nopCommerce WEB-10001",
+        "erp_sales_order_example": "SO-0001",
+        "shipment_example": "SHIP-0001",
+        "rule": "Preserve application-scoped identifiers and explicit cross-application correlations; do not equate source order ID, ERP sales order ID and shipment ID."
+      },
+      "implementation_mapping": {
+        "existing": "Frontier.Orders",
+        "primary_parent": "ERP",
+        "status": "steward_approved_working_mapping",
+        "existing_behavior": "ERP-facing order acceptance from nopCommerce source data",
+        "candidate_only": "Frontier.Storefront.Orders",
+        "candidate_status": "not_implemented_not_authorized"
+      },
+      "integration_relationships": [
+        {
+          "source": "nopCommerce",
+          "target": "ERP",
+          "purpose": "Storefront-originated order to central sales-order acceptance",
+          "status": "conceptual; actual transport/interfaces unverified"
+        },
+        {
+          "source": "ERP",
+          "target": "Voxware",
+          "purpose": "Fulfillment work and outcomes",
+          "status": "conceptual; actual transport/interfaces unverified"
+        },
+        {
+          "source": "ERP",
+          "target": "Route4Me",
+          "purpose": "Shipment/dispatch and delivery outcome exchange",
+          "status": "modeled; actual vendor interface unverified"
+        }
+      ],
+      "scope_limitations": [
+        "No source tree or solution reorganization authorized by this CUB",
+        "No new C# project authorized",
+        "Original enterprise topology nodes and edges remain unchanged",
+        "Existing Stage 1–3.1 evidence remains unchanged"
+      ]
+    }
+  },
+  "engine_signature": {
+    "engine_vendor": "openai",
+    "engine_family": "GPT",
+    "engine_model": "GPT-6",
+    "signature_role": "update",
+    "signature_timestamp_utc": "2026-11-10T18:00:00Z",
+    "notes": "Targeted v0.9.1 successor generated from SBPKG. User-approved working architecture distinguished from actual Frontier deployment."
+  },
+  "previous_version": "0.9.1",
+  "last_updated_utc": "2026-11-10T18:00:00Z",
+  "revision": {
+    "source_predecessor": "DAT-Frontier-Working-Systems-Map_2026-11-10_v0.9.1.json",
+    "source_predecessor_sha256": "373d1aa7cadeffc0775c9480ec8bc5600443290fe1e61b8a310a7edabc13a43d",
+    "change_type": "PATCH — approved working order origination/ownership mapping",
+    "changes": [
+      "Capture steward-approved nopCommerce checkout/admin and ERP central sales-order authority working model without asserting Frontier production configuration.",
+      "Assign approved primary ownership of existing Frontier.Orders to ERP, preserving candidate/unresolved ownership of other components.",
+      "Record distinct source vs ERP vs shipment IDs and proposed application-to-application order handoff.",
+      "Represent nopCommerce as a Business Application without a dedicated implemented component; candidate Frontier.Storefront.Orders is not authorized implementation."
+    ],
+    "authority": "Human Orchestrator: Approved most-likely order mapping, then CUB and Proceed, 2026-11-10"
+  },
+  "recommended_filename": "DAT-Frontier-Working-Systems-Map_2026-11-10_v0.9.2.json",
+  "recommended_storage_path": "S:\\Projects\\$FrontierDistribution\\$_ProjectBrain\\25_DAT",
+  "governance_provenance": {
+    "sb_meta": "2.11.1",
+    "frag_meta": "1.0.1",
+    "cub_check": "1.0.0",
+    "lossless_extraction": "1.0.0"
+  },
+  "revision_history": [
+    {
+      "source_predecessor": "DAT-Frontier-Working-Systems-Map_2026-10-26_v0.1.0.json",
+      "change_type": "source reconciliation and/or operational correction",
+      "changes": [
+        "Add Route4Me platform node and vendor-reported association with last-mile delivery",
+        "Do not infer Route4Me-to-ERP or Route4Me-to-Voxware interface"
+      ],
+      "authority": "Human Orchestrator CUB proceed, 2026-10-27; preserve predecessor unmodified"
+    },
+    {
+      "source_predecessor": "DAT-Frontier-Working-Systems-Map_2026-10-27_v0.2.0.json",
+      "source_predecessor_sha256": "d680bab307892030d23274ecc3b74e7633b1b8760f023c7bf64f6026c4e4a9f0",
+      "change_type": "MINOR — additive evidence and component-reference expansion",
+      "changes": [
+        "Preserve all 15 node IDs, 17 edges and seven assumptions; enrich the existing Voxware node",
+        "Add historical VoxTempo/Cloud VMS evidence and a link to the product catalog",
+        "Keep generic tools, AR, hardware and integration examples outside asserted Frontier topology"
+      ],
+      "authority": "User request 2026-10-28; predecessor remains unchanged."
+    },
+    {
+      "source_predecessor": "DAT-Frontier-Working-Systems-Map_2026-10-28_v0.3.0.json",
+      "source_predecessor_sha256": "21ae220e8416397cd1c634ac5190190943c06c063d351247393d607951298f72",
+      "change_type": "MINOR — additive evidence, reference-model detail and discovery-state update",
+      "changes": [
+        "Preserve all existing node IDs, 17 edges, seven assumptions and Voxware catalog detail",
+        "Enrich the ERP placeholder with an explicitly provisional generic capability reference model",
+        "Add SQL Server as a posting-mentioned technology with no asserted deployment or ERP database edge",
+        "Link the updated evidence and open discovery questions"
+      ],
+      "authority": "Explicit steward Proceed after positive CUB; predecessor retained unchanged."
+    },
+    {
+      "source_predecessor": "DAT-Frontier-Working-Systems-Map_2026-10-30_v0.4.0.json",
+      "source_predecessor_sha256": "65268508ed506bdae3bf8642358f2a91fd50b2e6fcc2fc4dac82baf02e7a5def",
+      "change_type": "MINOR — additive source capture, research leads and contact-state reconciliation",
+      "changes": [
+        "Preserve the 16 node IDs, all 17 edges and all seven assumptions without adding a confirmed ERP or SQL Server relationship.",
+        "Enrich the existing ERP placeholder with Nicole’s literal E21 skill token and a separately labeled unverified Enterprise 21 expansion.",
+        "Link the new people corpus, functions and updated evidence/discovery questions; installation and database identities remain unknown."
+      ],
+      "authority": "Explicit user Proceed after the 2026-10-30 positive CUB check: create the People And Profiles DAT and bump Research Evidence, Functions And Stakeholders, Working Systems Map, Discovery Questions, and Employment Frontier Contact And Plan. No governance or COMM revision authorized or performed."
+    },
+    {
+      "source_predecessor": "DAT-Frontier-Working-Systems-Map_2026-10-30_v0.5.0.json",
+      "source_predecessor_sha256": "8505c87a6891e11d329dc77c89f3df9ba4f11b16d4edb32cc71869aedd02db62",
+      "change_type": "MINOR — additive source capture and substantive state reconciliation",
+      "changes": [
+        "Add a Geotab Connect event/media research lead without implementation edges.",
+        "Keep ERP identity, E21 expansion and SQL Server deployment/relationship unresolved."
+      ],
+      "authority": "Explicit user 'Proceed' after the 2026-10-31 positive CUB check: one new candidate DAT and seven versioned updates. Package and installer follow the established delivery workflow. No external message, company-system access, deployment, or SB governance change is performed."
+    },
+    {
+      "source_predecessor": "DAT-Frontier-Working-Systems-Map_2026-10-31_v0.6.0.json",
+      "source_predecessor_sha256": "e7ed5cc9726b6bfba6737d827fb562dcd65c6e60cb10dc1070a6dbaea54152df",
+      "change_type": "MINOR — operative working assumption and additive discovery/source update",
+      "changes": [
+        "Adopt H08 as the SQL Server default across Frontier database instances.",
+        "Add a focused webstore technology/reference model and onboarding inquiry without inventing production interfaces."
+      ],
+      "authority": "User 'Proceed' after the November 4 CUB check authorizing three Frontier DAT MINOR bumps: Working Systems Map 0.7.0, Research Evidence 0.7.0 and Discovery Questions 0.5.0, with predecessor/source preservation and installation delivery."
+    },
+    {
+      "source_predecessor": "DAT-Frontier-Working-Systems-Map_2026-11-04_v0.8.0.json",
+      "source_predecessor_sha256": "24d8e4ff780afdf5ea3179485218fd46445594db9241016d30d154844c80b4b2",
+      "change_type": "PATCH — bounded system-inventory discovery clarification",
+      "changes": [
+        "Register unconfirmed separate WMS as system-class discovery candidate.",
+        "Record high-priority ERP/WMS/Voxware relationship question UR02.",
+        "Preserve existing historical ERP↔Voxware and Voxware↔warehouse edges; no new confirmed integrations or Business Components."
+      ],
+      "authority": "User Proceed, 2026-11-09"
+    },
+    {
+      "source_predecessor": "DAT-Frontier-Working-Systems-Map_2026-11-09_v0.8.1.json",
+      "source_predecessor_sha256": "4cf3e9c11c82646ab5e8874085de2f641f8b702715e16bf42d52b1e22b79e9dd",
+      "change_type": "additive enterprise navigation overlay",
+      "changes": [
+        "Add operational areas → Order-to-Dispatch business process → business components → source classes/tests navigation",
+        "Ground C# location in actual source: Stage 2 classes reside in Frontier.Orders project",
+        "Keep original topology nodes, edges, assumptions and existing UR02 unchanged"
+      ],
+      "authority": "Human Orchestrator: Proceed (restore enterprise architecture navigation), 2026-11-09"
+    },
+    {
+      "source_predecessor": "DAT-Frontier-Working-Systems-Map_2026-11-09_v0.8.2.json",
+      "source_predecessor_sha256": "4cfdcee406432de94c59952064ca88a661c32cc08659d0c21e6039e38f8bc042",
+      "change_type": "MINOR — additive business process, business software application context, and executable Stage 3.1 evidence",
+      "changes": [
+        "Retain all original system topology nodes/edges and research assumptions",
+        "Add BP-DD and BC-09 to enterprise navigation without assuming new Frontier deployment edges",
+        "Name Route4Me explicitly as business software for Stage 3.1 delivery; distinguish executable handoff from live vendor integration",
+        "Record user-provided 192/192 verification and synchronized Git commit ab1358c",
+        "Preserve prior discovery items and Stage 2 artifacts"
+      ],
+      "authority": "User Proceed following 2026-11-10 CUB review"
+    },
+    {
+      "source_predecessor": "DAT-Frontier-Working-Systems-Map_2026-11-10_v0.9.0.json",
+      "source_predecessor_sha256": "2ae55c5279f79ce5afbb408df86df61ecdabf78065ee02d7e8206e1e56583deb",
+      "change_type": "PATCH — additive terminology/ownership convention",
+      "changes": [
+        "Add steward-agreed /COMPONENTS vocabulary, one-primary-Business-Application ownership rule, integration distinctions, context display guidance and explicit candidate/unresolved ownership."
+      ],
+      "authority": "Human Orchestrator: Proceed, 2026-11-10"
+    },
+    {
+      "source_predecessor": "DAT-Frontier-Working-Systems-Map_2026-11-10_v0.9.1.json",
+      "source_predecessor_sha256": "373d1aa7cadeffc0775c9480ec8bc5600443290fe1e61b8a310a7edabc13a43d",
+      "change_type": "PATCH — approved working order origination/ownership mapping",
+      "changes": [
+        "Capture steward-approved nopCommerce checkout/admin and ERP central sales-order authority working model without asserting Frontier production configuration.",
+        "Assign approved primary ownership of existing Frontier.Orders to ERP, preserving candidate/unresolved ownership of other components.",
+        "Record distinct source vs ERP vs shipment IDs and proposed application-to-application order handoff.",
+        "Represent nopCommerce as a Business Application without a dedicated implemented component; candidate Frontier.Storefront.Orders is not authorized implementation."
+      ],
+      "authority": "Human Orchestrator: Approved most-likely order mapping, then CUB and Proceed, 2026-11-10"
+    }
+  ],
+  "engine_signature_history": [
+    {
+      "engine_vendor": "openai",
+      "engine_family": "GPT-6",
+      "signature_role": "update",
+      "signature_timestamp_utc": "2026-10-27T22:20:00Z",
+      "confidence": "high for conversation-derived decisions; externally sourced claims retain claim-level qualifiers"
+    },
+    {
+      "engine_vendor": "openai",
+      "engine_family": "GPT-6",
+      "engine_model": "unknown",
+      "engine_build": "unknown",
+      "signature_timestamp_utc": "2026-10-28T18:32:34Z",
+      "signature_role": "update",
+      "confidence": "low",
+      "notes": "Exact serving model/build is not exposed. Evidence confidence is recorded separately from engine identity."
+    },
+    {
+      "engine_vendor": "openai",
+      "engine_family": "GPT-6",
+      "engine_model": "unknown",
+      "engine_build": "unknown",
+      "engine_release_epoch": "unknown",
+      "signature_timestamp_utc": "2026-10-30T14:50:28Z",
+      "signature_role": "update",
+      "confidence": "low",
+      "notes": "Exact serving model/build is not exposed; evidence classifications are recorded separately."
+    },
+    {
+      "engine_vendor": "openai",
+      "engine_family": "GPT-6",
+      "engine_model": "unknown",
+      "engine_build": "unknown",
+      "engine_release_epoch": "unknown",
+      "signature_timestamp_utc": "2026-10-30T17:44:11Z",
+      "signature_role": "update",
+      "confidence": "low",
+      "notes": "Exact serving model/build is not exposed. Engine-identity confidence is separate from source and claim confidence."
+    },
+    {
+      "engine_vendor": "openai",
+      "engine_family": "GPT-6",
+      "engine_model": "unknown",
+      "engine_build": "unknown",
+      "engine_release_epoch": "unknown",
+      "signature_timestamp_utc": "2026-10-31T15:13:28Z",
+      "signature_role": "update",
+      "confidence": "high",
+      "notes": "Vendor/family are supplied by the host. Exact serving variant/build are not exposed. Source assertions, inference, proposal and operational status are qualified in the artifact content."
+    },
+    {
+      "engine_vendor": "openai",
+      "engine_family": "GPT-6",
+      "engine_model": "unknown",
+      "engine_build": "unknown",
+      "engine_release_epoch": "unknown",
+      "signature_timestamp_utc": "2026-11-04T19:12:11Z",
+      "signature_role": "update",
+      "confidence": "high for source handling and instructed assumption; claim-level evidence classes govern factual confidence",
+      "notes": "Exact serving model/build are not exposed. No internal system access or local Windows installation is claimed."
+    }
+  ],
+  "change_log": [
+    {
+      "version": "0.3.0",
+      "date_utc": "2026-10-28T18:32:34Z",
+      "summary": "Preserve all 15 node IDs, 17 edges and seven assumptions; enrich the existing Voxware node; Add historical VoxTempo/Cloud VMS evidence and a link to the product catalog; Keep generic tools, AR, hardware and integration examples outside asserted Frontier topology"
+    },
+    {
+      "version": "0.4.0",
+      "date_utc": "2026-10-30T14:50:28Z",
+      "summary": "Preserve all existing node IDs, 17 edges, seven assumptions and Voxware catalog detail; Enrich the ERP placeholder with an explicitly provisional generic capability reference model; Add SQL Server as a posting-mentioned technology with no asserted deployment or ERP database edge; Link the updated evidence and open discovery questions"
+    },
+    {
+      "version": "0.5.0",
+      "date_utc": "2026-10-30T17:44:11Z",
+      "summary": "Preserve the 16 node IDs, all 17 edges and all seven assumptions without adding a confirmed ERP or SQL Server relationship.; Enrich the existing ERP placeholder with Nicole’s literal E21 skill token and a separately labeled unverified Enterprise 21 expansion.; Link the new people corpus, functions and updated evidence/discovery questions; installation and database identities remain unknown."
+    },
+    {
+      "version": "0.6.0",
+      "date_utc": "2026-10-31T15:13:28Z",
+      "summary": "Add a Geotab Connect event/media research lead without implementation edges. Keep ERP identity, E21 expansion and SQL Server deployment/relationship unresolved."
+    },
+    {
+      "version": "0.7.0",
+      "date_utc": "2026-11-04T19:12:11Z",
+      "change": "Adopt H08 as the SQL Server default across Frontier database instances.; Add a focused webstore technology/reference model and onboarding inquiry without inventing production interfaces."
+    },
+    {
+      "version": "0.8.0",
+      "date_utc": "2026-11-04T22:22:19Z",
+      "change": "Add the approved focused-discovery framework and current references; retain predecessor lineage."
+    },
+    {
+      "version": "0.8.1",
+      "date_utc": "2026-11-09T19:09:41Z",
+      "change": "WMS discovery candidate and unresolved ERP/WMS/Voxware relationship added; existing model otherwise unchanged."
+    },
+    {
+      "version": "0.8.2",
+      "date_utc": "2026-11-09T20:47:09Z",
+      "summary": "Enterprise navigation overlay linking areas, processes, business components and C# classes; preserve historical system topology."
+    },
+    {
+      "version": "0.9.0",
+      "date_utc": "2026-11-10T17:00:00Z",
+      "summary": "Business software-aware Dispatch-to-Delivery Stage 3.1 navigation and test evidence; predecessor topology preserved."
+    },
+    {
+      "version": "0.9.1",
+      "date_utc": "2026-11-10",
+      "summary": "Add steward-agreed /COMPONENTS vocabulary, one-primary-Business-Application ownership rule, integration distinctions, context display guidance and explicit candidate/unresolved ownership."
+    },
+    {
+      "version": "0.9.2",
+      "date_utc": "2026-11-10T18:00:00Z",
+      "summary": "Add approved working order origination and ERP order authority; preserve prior topology and executable evidence; update /COMPONENTS Frontier.Orders ownership only."
+    }
+  ],
+  "provenance_history": [
+    {
+      "sources": "Public company/job sources, 2026-10-26 retrieval, and user-supplied prior Employment conversation exports",
+      "limitations": "No Frontier internal-system access, company authorization, interviews, or live data.",
+      "update_sources": "Primary-source Voxware review on 2026-10-28; historical dates and generic capabilities remain individually qualified."
+    },
+    {
+      "sources": "Public company/job sources, 2026-10-26 retrieval, and user-supplied prior Employment conversation exports",
+      "limitations": "No Frontier internal-system access, technical-stakeholder validation, configuration inspection or live data. The reception inquiry is user-reported; no call recording or independent call transcript was inspected. The prior evidence set is preserved; only the three representative ERP reference pages were newly checked on 2026-10-30.",
+      "update_sources": "Research Evidence v0.4.0; the exact job snapshot; the visible conversation and generic capability synthesis F28."
+    },
+    {
+      "sources": "Exact preserved predecessor plus scoped user-supplied ContactOut CSV, browser-print PDFs, expanded-card screenshot reference, pasted profile, and direct collection-context statements.",
+      "limitations": "Compiled profile statements are not an internally verified organization chart or application inventory. No new live ERP-product verification or Frontier technical interview occurred. Original/source variants and missing fields are retained.",
+      "source_capture_artifact": "DAT-Frontier-People-And-Profiles_2026-10-30_v0.1.0.json"
+    }
+  ],
+  "authorization_history": [
+    "2026-10-28 user request for Voxware component/feature understanding and SB capture; append-only update from the supplied v0.2.0 baseline.",
+    "Human Orchestrator response \"Proceed\" on 2026-10-30 to the preceding CUB recommendation: update Research Evidence, Working Systems Map and Discovery Questions for the ERP inquiry, generic ERP placeholder and SQL Server evidence boundary.",
+    "Explicit user Proceed after the 2026-10-30 positive CUB check: create the People And Profiles DAT and bump Research Evidence, Functions And Stakeholders, Working Systems Map, Discovery Questions, and Employment Frontier Contact And Plan. No governance or COMM revision authorized or performed.",
+    "Explicit user 'Proceed' after the 2026-10-31 positive CUB check: one new candidate DAT and seven versioned updates. Package and installer follow the established delivery workflow. No external message, company-system access, deployment, or SB governance change is performed.",
+    "User 'Proceed' after the November 4 CUB check authorizing three Frontier DAT MINOR bumps: Working Systems Map 0.7.0, Research Evidence 0.7.0 and Discovery Questions 0.5.0, with predecessor/source preservation and installation delivery.",
+    {
+      "version": "0.8.1",
+      "authorization": "User Proceed following WMS CUB determination",
+      "date_utc": "2026-11-09T19:09:41Z"
+    },
+    "Human Orchestrator: Proceed after request to restore enterprise outer architecture view, 2026-11-09.",
+    "Human Orchestrator requested /COMPONENTS convention and explicitly approved Proceed on CUB, 2026-11-10.",
+    "Human Orchestrator: Approved nopCommerce-to-ERP working order model and requested Proceed on CUB, 2026-11-10."
+  ],
+  "lane": "25_DAT"
+}
