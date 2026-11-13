@@ -1,5 +1,8 @@
 using Frontier.Contracts;
 using Frontier.Identity.SqlServer;
+using Frontier.Identity;
+using Frontier.Domain;
+using Frontier.Orders;
 using Microsoft.Extensions.DependencyInjection;
 
 var connectionString = Environment.GetEnvironmentVariable("FRONTIER_SQL_CONNECTION_STRING");
@@ -11,6 +14,14 @@ if (string.IsNullOrWhiteSpace(connectionString))
 
 var services = new ServiceCollection();
 services.AddSqlProductIdentityResolver(connectionString);
+// Stage 2 composition root: retain the existing OrderIntake contract.
+// Customer/location lookup remains catalog-backed; SKU resolution is SQL-backed.
+services.AddSingleton(new IdentityCatalog
+{
+    Customers = new() { new Customer("C0001", "Synthetic pet retailer") },
+    CustomerLocations = new() { new CustomerLocation("LOC-01", "C0001", "Retail store") }
+});
+services.AddScoped<OrderIntake>();
 using var provider = services.BuildServiceProvider(validateScopes: true);
 using var scope = provider.CreateScope();
 var resolver = scope.ServiceProvider.GetRequiredService<IProductIdentityResolver>();
@@ -54,6 +65,43 @@ try
 catch (Exception exception)
 {
     Console.Error.WriteLine($"FAIL SQL execution: {exception}");
+    return 1;
+}
+
+// Stage 2 Order Intake through the same DI scope and SQL identity resolver.
+try
+{
+    var intake = scope.ServiceProvider.GetRequiredService<OrderIntake>();
+    var incoming = new IncomingOrder("nopCommerce", "WEB-SQL-10001", "C0001", "LOC-01", new[]
+    {
+        new IncomingOrderLine("1", "FD-DOG-0142", 3),
+        new IncomingOrderLine("2", "FD-DOG-0143", 2)
+    });
+    var received = intake.Receive(incoming);
+    Check("DI resolves Stage 2 OrderIntake", intake is not null);
+    Check("SQL-backed intake creates order", received.Status == IntakeStatus.Created && received.Order?.Status == "Received");
+    Check("SQL-backed intake resolves both SKUs", received.Order?.Lines.Count == 2 &&
+        received.Order.Lines[0].ProductId == "P000142" && received.Order.Lines[1].ProductId == "P000143");
+    Check("SQL-backed intake preserves quantities", received.Order?.Lines[0].Quantity == 3 && received.Order.Lines[1].Quantity == 2);
+    Check("SQL-backed intake preserves customer and location", received.Order?.CustomerId == "C0001" &&
+        received.Order.ShipToLocationId == "LOC-01");
+    Check("SQL-backed intake replay is idempotent", intake.Receive(incoming).Status == IntakeStatus.AlreadyReceived);
+    Check("SQL-backed intake rejects changed duplicate", intake.Receive(incoming with {
+        Lines = new[] { new IncomingOrderLine("1", "FD-DOG-0142", 99) }
+    }).Status == IntakeStatus.Rejected);
+    Check("SQL-backed intake rejects unknown customer", intake.Receive(incoming with {
+        ExternalOrderId = "WEB-SQL-10002", CustomerId = "UNKNOWN"
+    }).Status == IntakeStatus.Rejected);
+    Check("SQL-backed intake rejects unknown SKU", intake.Receive(incoming with {
+        ExternalOrderId = "WEB-SQL-10003", Lines = new[] { new IncomingOrderLine("1", "MISSING", 1) }
+    }).Status == IntakeStatus.Rejected);
+    Check("SQL-backed intake preserves order IDs after rejection", intake.Receive(incoming with {
+        ExternalOrderId = "WEB-SQL-10004"
+    }).Order?.SalesOrderId == "SO-0002");
+}
+catch (Exception exception)
+{
+    Console.Error.WriteLine($"FAIL Stage 2 SQL-backed intake execution: {exception}");
     return 1;
 }
 

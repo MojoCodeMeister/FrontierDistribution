@@ -8,6 +8,7 @@
   <ItemGroup>
     <ProjectReference Include="../../src/Frontier.Identity.SqlServer/Frontier.Identity.SqlServer.csproj" />
     <ProjectReference Include="../../src/Frontier.Identity/Frontier.Identity.csproj" />
+    <ProjectReference Include="../../src/Frontier.Orders/Frontier.Orders.csproj" />
     <PackageReference Include="Microsoft.Extensions.DependencyInjection" Version="8.0.1" />
   </ItemGroup>
 </Project>
