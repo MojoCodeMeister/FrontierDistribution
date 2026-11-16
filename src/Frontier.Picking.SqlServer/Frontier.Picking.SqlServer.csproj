@@ -2,6 +2,7 @@
   <PropertyGroup><TargetFramework>net8.0</TargetFramework><Nullable>enable</Nullable><ImplicitUsings>enable</ImplicitUsings></PropertyGroup>
   <ItemGroup>
     <ProjectReference Include="../Frontier.Orders/Frontier.Orders.csproj" />
+    <ProjectReference Include="../Frontier.Orders.SqlServer/Frontier.Orders.SqlServer.csproj" />
     <PackageReference Include="Microsoft.Data.SqlClient" Version="5.2.2" />
     <PackageReference Include="Microsoft.Extensions.DependencyInjection.Abstractions" Version="8.0.2" />
   </ItemGroup>

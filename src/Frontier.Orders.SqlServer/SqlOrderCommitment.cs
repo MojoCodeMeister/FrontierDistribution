@@ -44,6 +44,9 @@ public sealed class SqlOrderCommitment
         }
         if (!Exists(connection, tx, "SELECT COUNT(*) FROM erp.SalesOrder WHERE SalesOrderId = @id", "@id", salesOrderId))
             return Finish(tx, salesOrderId, warehouseId, CommitmentStatus.NotFound, [], "Order not found");
+        // Q25.1: a cancelled order must not become accepted again on replay.
+        if (Exists(connection, tx, "SELECT COUNT(*) FROM erp.OrderCancellation WHERE SalesOrderId = @id", "@id", salesOrderId))
+            return Finish(tx, salesOrderId, warehouseId, CommitmentStatus.Conflict, [], "Order cancelled; create a new order to retry");
         if (!Exists(connection, tx, "SELECT COUNT(*) FROM erp.Warehouse WHERE WarehouseId = @id", "@id", warehouseId))
             return Finish(tx, salesOrderId, warehouseId, CommitmentStatus.Conflict, [], "Warehouse not found");
 

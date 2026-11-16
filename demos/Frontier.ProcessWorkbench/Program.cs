@@ -1,5 +1,6 @@
 using System.Collections.Concurrent;
 using System.Data;
+using System.Text.Json.Serialization;
 using Frontier.Identity.SqlServer;
 using Frontier.Inventory.SqlServer;
 using Frontier.Orders;
@@ -15,12 +16,15 @@ if (string.IsNullOrWhiteSpace(connectionString))
 }
 
 var builder = WebApplication.CreateBuilder(args);
+builder.Services.ConfigureHttpJsonOptions(options =>
+    options.SerializerOptions.Converters.Add(new JsonStringEnumConverter()));
 // Intentionally local-only. This demonstration has no authentication.
 builder.WebHost.UseUrls("http://127.0.0.1:5187");
 builder.Services.AddSqlProductIdentityResolver(connectionString);
 builder.Services.AddSqlOrderIntake(connectionString);
 builder.Services.AddSqlInventoryAvailability(connectionString);
 builder.Services.AddSqlPickPlanStore(connectionString);
+builder.Services.AddScoped(_ => new SqlOrderCommitment(connectionString));
 builder.Services.AddSingleton<ConcurrentDictionary<Guid, DemoSession>>();
 var app = builder.Build();
 app.UseDefaultFiles();
@@ -39,7 +43,7 @@ app.MapGet("/api/session/{id:guid}", (Guid id, ConcurrentDictionary<Guid, DemoSe
 app.MapPost("/api/session/{id:guid}/order", (Guid id, NewOrderRequest input, ConcurrentDictionary<Guid, DemoSession> sessions,
     SqlOrderIntake intake) => Execute(id, sessions, state =>
 {
-    if (state.Order is not null) return new("Order is already accepted; create another session for a new order", false);
+    if (state.Order is not null) return new("Order is already received; create another session for a new order", false);
     if (input.Lines is null || input.Lines.Length is < 1 or > 12 ||
         input.Lines.Any(x => x is null || string.IsNullOrWhiteSpace(x.Sku) || x.Quantity < 1 || x.Quantity > 100000) ||
         string.IsNullOrWhiteSpace(input.CustomerId) || string.IsNullOrWhiteSpace(input.ShipToLocationId))
@@ -53,23 +57,55 @@ app.MapPost("/api/session/{id:guid}/order", (Guid id, NewOrderRequest input, Con
     state.Incoming = incoming;
     state.Order = result.Order;
     state.CreatedBySession = true;
-    return new($"ERP order {result.Order.SalesOrderId} persisted", true);
+    return new($"ERP order {result.Order.SalesOrderId} received (not yet accepted)", true);
+}));
+
+// Q24: ERP alone owns the acceptance decision and atomic stock reservations.
+app.MapPost("/api/session/{id:guid}/commit", (Guid id, WarehouseRequest input,
+    ConcurrentDictionary<Guid, DemoSession> sessions, SqlOrderCommitment commitment) => Execute(id, sessions, state =>
+{
+    if (state.Order is null) return new("Receive an ERP order first", false);
+    if (state.Plan is not null) return new("Pick plan already generated", false);
+    if (string.IsNullOrWhiteSpace(input.WarehouseId)) return new("Warehouse is required", false);
+    var result = commitment.Accept(state.Order.SalesOrderId, input.WarehouseId.Trim());
+    state.Commitment = result;
+    state.Events.Add($"ERP commitment: {result.Status} — {result.Message}");
+    state.Atp = ReadAtp(connectionString, state.Order.SalesOrderId, input.WarehouseId.Trim());
+    return new($"ERP acceptance: {result.Status} — {result.Message}",
+        result.Status is CommitmentStatus.Accepted or CommitmentStatus.AlreadyAccepted);
+}));
+
+app.MapPost("/api/session/{id:guid}/atp", (Guid id, WarehouseRequest input,
+    ConcurrentDictionary<Guid, DemoSession> sessions) => Execute(id, sessions, state =>
+{
+    if (state.Order is null) return new("Receive an ERP order first", false);
+    if (string.IsNullOrWhiteSpace(input.WarehouseId)) return new("Warehouse is required", false);
+    state.Atp = ReadAtp(connectionString, state.Order.SalesOrderId, input.WarehouseId.Trim());
+    state.Events.Add($"ERP ATP refreshed at {input.WarehouseId.Trim()}");
+    return new("ERP available-to-promise refreshed", true);
 }));
 
 app.MapPost("/api/session/{id:guid}/inventory", (Guid id, WarehouseRequest input,
     ConcurrentDictionary<Guid, DemoSession> sessions, SqlInventoryAvailability inventory) => Execute(id, sessions, state =>
 {
-    if (state.Order is null) return new("Accept an order first", false);
+    if (state.Order is null) return new("Receive an order first", false);
     if (state.Plan is not null) return new("Pick plan already generated; inventory assessment is frozen", false);
     if (string.IsNullOrWhiteSpace(input.WarehouseId)) return new("Warehouse is required", false);
+    if (state.Commitment?.Status is not (CommitmentStatus.Accepted or CommitmentStatus.AlreadyAccepted) ||
+        !string.Equals(state.Commitment.WarehouseId, input.WarehouseId.Trim(), StringComparison.OrdinalIgnoreCase))
+        return new("ERP must accept and reserve this order at the selected warehouse first", false);
     state.Availability = inventory.Assess(state.Order, input.WarehouseId.Trim());
+    state.Atp = ReadAtp(connectionString, state.Order.SalesOrderId, input.WarehouseId.Trim());
     state.Events.Add($"ERP inventory: {state.Availability.Status} at {state.Availability.WarehouseId}");
-    return new($"Inventory: {state.Availability.Status}", true);
+    return new($"Physical on-hand snapshot: {state.Availability.Status}; see separate ATP", true);
 }));
 
 app.MapPost("/api/session/{id:guid}/plan", (Guid id, ConcurrentDictionary<Guid, DemoSession> sessions) => Execute(id, sessions, state =>
 {
-    if (state.Order is null || state.Availability is null) return new("Accept an order and assess inventory first", false);
+    if (state.Order is null || state.Availability is null) return new("Receive an order and assess inventory first", false);
+    if (state.Commitment?.Status is not (CommitmentStatus.Accepted or CommitmentStatus.AlreadyAccepted) ||
+        !string.Equals(state.Commitment.WarehouseId, state.Availability.WarehouseId, StringComparison.OrdinalIgnoreCase))
+        return new("ERP inventory commitment required before Voxware picking", false);
     if (state.Plan is not null) return new("Pick plan already generated", false);
     state.Plan = new PickPlanning().Create(state.Order, state.Availability);
     state.Events.Add($"Voxware plan: {state.Plan.Status} (not yet persisted)");
@@ -124,6 +160,8 @@ app.MapPost("/api/session/{id:guid}/cleanup", (Guid id, ConcurrentDictionary<Gui
             THROW 50010, 'Demo order ownership does not match; cleanup refused', 1;
         DELETE FROM voxware.PickPlanLine WHERE SalesOrderId=@id;
         DELETE FROM voxware.PickPlan WHERE SalesOrderId=@id;
+        DELETE FROM erp.StockReservation WHERE SalesOrderId=@id;
+        DELETE FROM erp.OrderCommitment WHERE SalesOrderId=@id;
         DELETE FROM erp.SalesOrderLine WHERE SalesOrderId=@id;
         DELETE FROM erp.SalesOrder WHERE SalesOrderId=@id AND ExternalOrderId=@external;
         """, sql, tx);
@@ -135,6 +173,8 @@ app.MapPost("/api/session/{id:guid}/cleanup", (Guid id, ConcurrentDictionary<Gui
     state.Order = null;
     state.Incoming = null;
     state.Availability = null;
+    state.Commitment = null;
+    state.Atp = null;
     state.Plan = null;
     state.Persisted = false;
     state.CreatedBySession = false;
@@ -164,7 +204,7 @@ static IResult Execute(Guid id, ConcurrentDictionary<Guid, DemoSession> sessions
 static object View(DemoSession s) => new
 {
     id = s.Id, reference = s.ExternalReference, order = s.Order,
-    availability = s.Availability, plan = s.Plan, persisted = s.Persisted,
+    availability = s.Availability, commitment = s.Commitment, atp = s.Atp, plan = s.Plan, persisted = s.Persisted,
     events = s.Events.ToArray()
 };
 
@@ -175,6 +215,8 @@ static object ReadRecords(string connectionString, string orderId)
     var orders = new List<object>();
     var orderLines = new List<object>();
     var plans = new List<object>();
+    var commitments = new List<object>();
+    var reservations = new List<object>();
     var planLines = new List<object>();
     using (var cmd = new SqlCommand("SELECT SalesOrderId, SourceSystem, ExternalOrderId, CustomerId, ShipToLocationId, Status FROM erp.SalesOrder WHERE SalesOrderId=@id", sql))
     {
@@ -200,7 +242,52 @@ static object ReadRecords(string connectionString, string orderId)
         using var r = cmd.ExecuteReader();
         while (r.Read()) planLines.Add(new { warehouseId = r.GetString(0), productId = r.GetString(1), quantity = r.GetInt32(2) });
     }
-    return new { erp = new { orders, orderLines }, voxware = new { plans, planLines } };
+    using (var cmd = new SqlCommand("SELECT SalesOrderId, WarehouseId, CommittedUtc FROM erp.OrderCommitment WHERE SalesOrderId=@id", sql))
+    {
+        cmd.Parameters.Add("@id", SqlDbType.VarChar, 64).Value = orderId;
+        using var r = cmd.ExecuteReader();
+        while (r.Read()) commitments.Add(new { salesOrderId = r.GetString(0), warehouseId = r.GetString(1), committedUtc = r.GetDateTime(2) });
+    }
+    using (var cmd = new SqlCommand("SELECT WarehouseId, ProductId, Quantity FROM erp.StockReservation WHERE SalesOrderId=@id ORDER BY ProductId", sql))
+    {
+        cmd.Parameters.Add("@id", SqlDbType.VarChar, 64).Value = orderId;
+        using var r = cmd.ExecuteReader();
+        while (r.Read()) reservations.Add(new { warehouseId = r.GetString(0), productId = r.GetString(1), quantity = r.GetInt32(2) });
+    }
+    return new { erp = new { orders, orderLines, commitments, reservations }, voxware = new { plans, planLines } };
+}
+
+// ERP ATP is a read-only observation, separate from physical on-hand and the atomic acceptance operation.
+static object ReadAtp(string connectionString, string salesOrderId, string warehouseId)
+{
+    using var sql = new SqlConnection(connectionString);
+    sql.Open();
+    using var cmd = new SqlCommand("""
+        SELECT d.ProductId, d.Requested, soh.OnHand,
+            COALESCE(res.Reserved, CONVERT(bigint, 0)) AS Reserved,
+            CASE WHEN soh.OnHand IS NULL THEN NULL
+                 ELSE CONVERT(bigint, soh.OnHand) - COALESCE(res.Reserved, CONVERT(bigint, 0)) END AS ATP
+        FROM (
+            SELECT ProductId, SUM(CONVERT(bigint, Quantity)) AS Requested
+            FROM erp.SalesOrderLine WHERE SalesOrderId=@order GROUP BY ProductId
+        ) d
+        LEFT JOIN erp.StockOnHand soh ON soh.WarehouseId=@warehouse AND soh.ProductId=d.ProductId
+        OUTER APPLY (
+            SELECT SUM(CONVERT(bigint, r.Quantity)) AS Reserved FROM erp.StockReservation r
+            WHERE r.WarehouseId=@warehouse AND r.ProductId=d.ProductId
+        ) res ORDER BY d.ProductId;
+        """, sql);
+    cmd.Parameters.Add("@order", SqlDbType.VarChar, 64).Value = salesOrderId;
+    cmd.Parameters.Add("@warehouse", SqlDbType.VarChar, 64).Value = warehouseId;
+    var lines = new List<object>();
+    using var reader = cmd.ExecuteReader();
+    while (reader.Read()) lines.Add(new {
+        productId = reader.GetString(0), requested = reader.GetInt64(1),
+        onHand = reader.IsDBNull(2) ? (int?)null : reader.GetInt32(2),
+        reserved = reader.GetInt64(3),
+        availableToPromise = reader.IsDBNull(4) ? (long?)null : reader.GetInt64(4)
+    });
+    return new { warehouseId, lines };
 }
 
 sealed record OrderLineRequest(string Sku, int Quantity);
@@ -215,6 +302,8 @@ sealed class DemoSession(Guid id, string externalReference)
     public IncomingOrder? Incoming { get; set; }
     public SalesOrder? Order { get; set; }
     public AvailabilityResult? Availability { get; set; }
+    public CommitmentResult? Commitment { get; set; }
+    public object? Atp { get; set; }
     public PickPlan? Plan { get; set; }
     public bool Persisted { get; set; }
     public bool CreatedBySession { get; set; }
