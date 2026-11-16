@@ -65,6 +65,8 @@ Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "Frontier.Picking.SqlServer"
 EndProject
 Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "Frontier.Picking.SqlServer.Tests", "tests\Frontier.Picking.SqlServer.Tests\Frontier.Picking.SqlServer.Tests.csproj", "{09EA1A76-826F-482D-BB2F-4CC6B84EE453}"
 EndProject
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "Frontier.OrderFlow.Demo", "demos\Frontier.OrderFlow.Demo\Frontier.OrderFlow.Demo.csproj", "{E8AC173B-EB7E-4E08-9650-9349FD79801C}"
+EndProject
 Global
 	GlobalSection(SolutionConfigurationPlatforms) = preSolution
 		Debug|Any CPU = Debug|Any CPU
@@ -351,11 +353,24 @@ Global
 		{09EA1A76-826F-482D-BB2F-4CC6B84EE453}.Release|x64.Build.0 = Release|Any CPU
 		{09EA1A76-826F-482D-BB2F-4CC6B84EE453}.Release|x86.ActiveCfg = Release|Any CPU
 		{09EA1A76-826F-482D-BB2F-4CC6B84EE453}.Release|x86.Build.0 = Release|Any CPU
+		{E8AC173B-EB7E-4E08-9650-9349FD79801C}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{E8AC173B-EB7E-4E08-9650-9349FD79801C}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{E8AC173B-EB7E-4E08-9650-9349FD79801C}.Debug|x64.ActiveCfg = Debug|Any CPU
+		{E8AC173B-EB7E-4E08-9650-9349FD79801C}.Debug|x64.Build.0 = Debug|Any CPU
+		{E8AC173B-EB7E-4E08-9650-9349FD79801C}.Debug|x86.ActiveCfg = Debug|Any CPU
+		{E8AC173B-EB7E-4E08-9650-9349FD79801C}.Debug|x86.Build.0 = Debug|Any CPU
+		{E8AC173B-EB7E-4E08-9650-9349FD79801C}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{E8AC173B-EB7E-4E08-9650-9349FD79801C}.Release|Any CPU.Build.0 = Release|Any CPU
+		{E8AC173B-EB7E-4E08-9650-9349FD79801C}.Release|x64.ActiveCfg = Release|Any CPU
+		{E8AC173B-EB7E-4E08-9650-9349FD79801C}.Release|x64.Build.0 = Release|Any CPU
+		{E8AC173B-EB7E-4E08-9650-9349FD79801C}.Release|x86.ActiveCfg = Release|Any CPU
+		{E8AC173B-EB7E-4E08-9650-9349FD79801C}.Release|x86.Build.0 = Release|Any CPU
 	EndGlobalSection
 	GlobalSection(SolutionProperties) = preSolution
 		HideSolutionNode = FALSE
 	EndGlobalSection
 	GlobalSection(NestedProjects) = preSolution
+		{E8AC173B-EB7E-4E08-9650-9349FD79801C} = {FE7AE6F0-2F10-ACC4-B428-CC2A51C72532}
 		{B6B99B93-185F-5F7C-989F-BE22BE9B9991} = {6738C298-ED40-7790-6347-0DC329F6B645}
 		{3F2D1F38-8083-5345-A8E6-F88B5823F685} = {6738C298-ED40-7790-6347-0DC329F6B645}
 		{39AB3C2A-E9F1-5B0A-9D98-407644211A32} = {6738C298-ED40-7790-6347-0DC329F6B645}

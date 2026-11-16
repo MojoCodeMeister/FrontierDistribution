@@ -20,3 +20,4 @@ TestResults/
 .env
 .env.*
 appsettings.Local.json
+$_ProjectBrain/
