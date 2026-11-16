@@ -22,7 +22,27 @@ public sealed class SqlFulfillmentConsumption
         _cs = connectionString;
     }
 
+    // Q25.4 entry point remains available and unchanged in behavior.
     public ConsumptionResult ConfirmDeparture(string salesOrderId, string warehouseId, string packingId, string departureId)
+        => ConfirmCore(salesOrderId, warehouseId, packingId, departureId, null, null);
+
+    /// <summary>
+    /// Q25.5: ERP shipping workflow attests physical custody departure. Authenticated caller
+    /// is responsible for checking the actor's authority and physical evidence; this method
+    /// does not infer departure from Voxware packing or Route4Me dispatch.
+    /// Consumes inventory, records the ERP departure, and queues the dispatch request atomically.
+    /// It does not call Route4Me. Requires 090-erp-warehouse-departure.sql.
+    /// </summary>
+    public ConsumptionResult ConfirmAndQueueDeparture(string salesOrderId, string warehouseId,
+        string packingId, string departureId, string attestedBy, string dispatchRequestId)
+    {
+        Validate(attestedBy, nameof(attestedBy));
+        Validate(dispatchRequestId, nameof(dispatchRequestId));
+        return ConfirmCore(salesOrderId, warehouseId, packingId, departureId, attestedBy, dispatchRequestId);
+    }
+
+    private ConsumptionResult ConfirmCore(string salesOrderId, string warehouseId,
+        string packingId, string departureId, string? attestedBy, string? dispatchRequestId)
     {
         Validate(salesOrderId, nameof(salesOrderId));
         Validate(warehouseId, nameof(warehouseId));
@@ -62,8 +82,21 @@ public sealed class SqlFulfillmentConsumption
                 var exact = Same(reader.GetString(0), warehouseId) && Same(reader.GetString(1), packingId) &&
                             Same(reader.GetString(2), departureId);
                 reader.Close();
+                if (exact && dispatchRequestId is not null)
+                {
+                    using var replay = Cmd(conn, tx, """
+                        SELECT d.AttestedBy, q.DispatchRequestId
+                        FROM erp.WarehouseDeparture d
+                        INNER JOIN erp.DispatchIntent q ON q.DepartureId=d.DepartureId
+                        WHERE d.DepartureId=@departure AND d.SalesOrderId=@order;
+                        """);
+                    Bind(replay);
+                    using var existing = replay.ExecuteReader();
+                    exact = existing.Read() && Same(existing.GetString(0), attestedBy!) &&
+                        Same(existing.GetString(1), dispatchRequestId);
+                }
                 return Finish(exact ? ConsumptionStatus.AlreadyConsumed : ConsumptionStatus.Conflict, 0,
-                    exact ? "Departure already consumed" : "Different departure already consumed");
+                    exact ? "Departure already consumed" : "Different departure or dispatch intent already recorded");
             }
         }
         if ((int)Scalar("SELECT COUNT(*) FROM erp.OrderCancellation WHERE SalesOrderId=@order")! != 0)
@@ -123,7 +156,30 @@ public sealed class SqlFulfillmentConsumption
             if (delete.ExecuteNonQuery() != reserved.Count)
                 throw new InvalidOperationException("ERP reservation count changed; consumption rolled back");
         }
-        return Finish(ConsumptionStatus.Consumed, checked(reserved.Values.Sum()), "ERP on-hand consumed; reservation retired");
+        if (dispatchRequestId is not null)
+        {
+            using (var departure = Cmd(conn, tx, """
+                INSERT erp.WarehouseDeparture (DepartureId, SalesOrderId, WarehouseId, PackingId, AttestedBy)
+                VALUES (@departure,@order,@warehouse,@packing,@actor);
+                """))
+            {
+                Bind(departure);
+                departure.Parameters.Add("@actor", SqlDbType.VarChar, 64).Value = attestedBy!;
+                departure.ExecuteNonQuery();
+            }
+            using (var intent = Cmd(conn, tx, """
+                INSERT erp.DispatchIntent (DispatchRequestId, DepartureId, Status)
+                VALUES (@request,@departure,'Pending');
+                """))
+            {
+                Bind(intent);
+                intent.Parameters.Add("@request", SqlDbType.VarChar, 64).Value = dispatchRequestId;
+                intent.ExecuteNonQuery();
+            }
+        }
+        return Finish(ConsumptionStatus.Consumed, checked(reserved.Values.Sum()),
+            dispatchRequestId is null ? "ERP on-hand consumed; reservation retired" :
+            "ERP departure recorded, inventory consumed, and dispatch intent queued");
 
         object? Scalar(string sql)
         {
