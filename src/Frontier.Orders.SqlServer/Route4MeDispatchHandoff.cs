@@ -5,8 +5,12 @@ namespace Frontier.Orders.SqlServer;
 
 // Q25.5d1: application boundary only. The real Route4Me transport is deliberately not implemented.
 public sealed record Route4MeDispatchLine(string ProductId, int Quantity);
+public sealed record Route4MeDeliveryDestination(string LocationId, string Address1,
+    string? Address2, string City, string Region, string PostalCode, string CountryCode,
+    string? ContactName, string? ContactPhone);
 public sealed record Route4MeDispatchRequest(string DispatchRequestId, string DepartureId,
-    string SalesOrderId, string WarehouseId, string PackingId, IReadOnlyList<Route4MeDispatchLine> Lines);
+    string SalesOrderId, string WarehouseId, string PackingId, IReadOnlyList<Route4MeDispatchLine> Lines,
+    Route4MeDeliveryDestination Destination);
 public enum RemoteDispatchState { NotFound, Accepted, Uncertain, Rejected }
 public sealed record RemoteDispatchResult(RemoteDispatchState State, string? DispatchRequestId = null,
     string? ExternalShipmentId = null, string? Error = null);
@@ -60,9 +64,9 @@ public sealed class Route4MeDispatchHandoff
             var stored = _delivery.MarkTerminalFailure(dispatchRequestId, claim.LeaseToken, Truncate(reason));
             return new(stored ? HandoffState.Failed : HandoffState.LeaseLost, dispatchRequestId, reason);
         }
-        HandoffResult Accept(string reason)
+        HandoffResult Accept(string reason, string remoteShipmentId)
         {
-            var stored = _delivery.MarkAccepted(dispatchRequestId, claim.LeaseToken);
+            var stored = _delivery.MarkAccepted(dispatchRequestId, claim.LeaseToken, remoteShipmentId);
             return new(stored ? HandoffState.Accepted : HandoffState.LeaseLost, dispatchRequestId, reason);
         }
         try
@@ -72,7 +76,12 @@ public sealed class Route4MeDispatchHandoff
             var existing = await _gateway.ReconcileAsync(request.DispatchRequestId, cancellationToken);
             var previous = Evaluate(existing, request, "reconciliation");
             if (previous is not null) return previous;
-            // Only a definitive NotFound result permits an attempted submission.
+            // A lookup miss does not prove non-creation if a remote write was attempted.
+            if (_delivery.WasRemoteSubmissionAttempted(request.DispatchRequestId))
+                return Retry("Remote lookup NotFound after prior submission attempt; duplicate submission blocked");
+            // Atomically mark the possible external write before initiating network I/O.
+            if (!_delivery.MarkRemoteSubmissionAttempted(dispatchRequestId, claim.LeaseToken))
+                return new(HandoffState.LeaseLost, dispatchRequestId, "Submission claim no longer held");
             var submitted = await _gateway.SubmitAsync(request, cancellationToken);
             return Evaluate(submitted, request, "submission") ?? Retry("Submission unexpectedly reported not found");
         }
@@ -97,8 +106,8 @@ public sealed class Route4MeDispatchHandoff
                 case RemoteDispatchState.Accepted:
                     if (!string.Equals(response.DispatchRequestId, request.DispatchRequestId, StringComparison.OrdinalIgnoreCase)
                         || string.IsNullOrWhiteSpace(response.ExternalShipmentId))
-                        return Fail("Remote acceptance lacks matching request identity and shipment reference");
-                    return Accept(phase + " accepted: " + response.ExternalShipmentId);
+                        return Retry("Remote acceptance lacks matching request identity and shipment reference; manual reconciliation required");
+                    return Accept(phase + " accepted: " + response.ExternalShipmentId, response.ExternalShipmentId);
                 default: return Retry(phase + " returned unrecognized status");
             }
         }
@@ -117,10 +126,34 @@ public sealed class Route4MeDispatchHandoff
         cmd.Parameters.Add("@order", SqlDbType.VarChar, 64).Value = claim.SalesOrderId;
         cmd.Parameters.Add("@warehouse", SqlDbType.VarChar, 64).Value = claim.WarehouseId;
         var lines = new List<Route4MeDispatchLine>();
-        using var r = cmd.ExecuteReader();
-        while (r.Read()) lines.Add(new(r.GetString(0), r.GetInt32(1)));
+        using (var r = cmd.ExecuteReader())
+            while (r.Read()) lines.Add(new(r.GetString(0), r.GetInt32(1)));
+
+        using var destination = new SqlCommand("""
+            SELECT loc.LocationId, loc.Address1, loc.Address2, loc.City, loc.Region,
+                   loc.PostalCode, loc.CountryCode, loc.ContactName, loc.ContactPhone
+            FROM erp.SalesOrder AS so
+            INNER JOIN erp.CustomerLocation AS loc
+                ON loc.LocationId=so.ShipToLocationId AND loc.CustomerId=so.CustomerId
+            WHERE so.SalesOrderId=@order;
+            """, conn);
+        destination.Parameters.Add("@order", SqlDbType.VarChar, 64).Value = claim.SalesOrderId;
+        using var reader = destination.ExecuteReader();
+        if (!reader.Read()) throw new InvalidDataException("ERP ship-to location missing");
+        string? Value(int n) => reader.IsDBNull(n) ? null : reader.GetString(n);
+        string Required(int n, string field)
+        {
+            var value = Value(n);
+            if (string.IsNullOrWhiteSpace(value))
+                throw new InvalidDataException("ERP ship-to " + field + " missing");
+            return value;
+        }
+        var address = new Route4MeDeliveryDestination(
+            Required(0, "location"), Required(1, "address line 1"), Value(2),
+            Required(3, "city"), Required(4, "region"), Required(5, "postal code"),
+            Required(6, "country"), Value(7), Value(8));
         return new(claim.DispatchRequestId, claim.DepartureId, claim.SalesOrderId,
-            claim.WarehouseId, claim.PackingId, lines.AsReadOnly());
+            claim.WarehouseId, claim.PackingId, lines.AsReadOnly(), address);
     }
 
     private static string Truncate(string message) => message.Length <= 512 ? message : message[..512];

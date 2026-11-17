@@ -80,14 +80,40 @@ public sealed class SqlDispatchIntentDelivery
         return item;
     }
 
-    /// <summary>Only the current, unexpired lease holder may acknowledge acceptance.</summary>
-    public bool MarkAccepted(string requestId, Guid leaseToken)
+    /// <summary>Durably records that a remote write may occur before transport starts.</summary>
+    public bool MarkRemoteSubmissionAttempted(string requestId, Guid leaseToken)
         => Transition(requestId, leaseToken, """
+            UPDATE erp.DispatchIntent
+               SET RemoteSubmissionAttemptedUtc=SYSUTCDATETIME()
+            WHERE DispatchRequestId=@request AND LeaseToken=@token AND Status='Pending'
+                AND LeaseUntilUtc > SYSUTCDATETIME() AND RemoteSubmissionAttemptedUtc IS NULL;
+            """);
+
+    public bool WasRemoteSubmissionAttempted(string requestId)
+    {
+        ArgumentException.ThrowIfNullOrWhiteSpace(requestId);
+        using var conn = new SqlConnection(_connectionString);
+        conn.Open();
+        using var cmd = new SqlCommand("""
+            SELECT RemoteSubmissionAttemptedUtc FROM erp.DispatchIntent
+            WHERE DispatchRequestId=@request;
+            """, conn);
+        cmd.Parameters.Add("@request", SqlDbType.VarChar, 64).Value = requestId;
+        return cmd.ExecuteScalar() is DateTime;
+    }
+
+    /// <summary>Only the current, unexpired lease holder may acknowledge acceptance.</summary>
+    public bool MarkAccepted(string requestId, Guid leaseToken, string remoteShipmentId)
+    {
+        ArgumentException.ThrowIfNullOrWhiteSpace(remoteShipmentId);
+        if (remoteShipmentId.Length > 200) throw new ArgumentOutOfRangeException(nameof(remoteShipmentId));
+        return Transition(requestId, leaseToken, """
             UPDATE erp.DispatchIntent SET Status='Accepted', AcceptedUtc=SYSUTCDATETIME(),
-                LeaseToken=NULL, LeaseUntilUtc=NULL, LastError=NULL
+                LeaseToken=NULL, LeaseUntilUtc=NULL, LastError=NULL, RemoteShipmentId=@remoteId
             WHERE DispatchRequestId=@request AND LeaseToken=@token AND Status='Pending'
                 AND LeaseUntilUtc > SYSUTCDATETIME();
-            """);
+            """, remoteShipmentId: remoteShipmentId);
+    }
 
     /// <summary>Release the lease and schedule a retry; a new claim is required for another attempt.</summary>
     public bool MarkRetryableFailure(string requestId, Guid leaseToken, string error, TimeSpan retryDelay)
@@ -115,7 +141,7 @@ public sealed class SqlDispatchIntentDelivery
             """, error);
     }
 
-    private bool Transition(string requestId, Guid token, string sql, string? error = null, int retrySeconds = 0)
+    private bool Transition(string requestId, Guid token, string sql, string? error = null, int retrySeconds = 0, string? remoteShipmentId = null)
     {
         ArgumentException.ThrowIfNullOrWhiteSpace(requestId);
         if (requestId.Length > 64) throw new ArgumentOutOfRangeException(nameof(requestId));
@@ -127,6 +153,7 @@ public sealed class SqlDispatchIntentDelivery
         cmd.Parameters.Add("@token", SqlDbType.UniqueIdentifier).Value = token;
         cmd.Parameters.Add("@error", SqlDbType.NVarChar, 512).Value = (object?)error ?? DBNull.Value;
         cmd.Parameters.Add("@retrySeconds", SqlDbType.Int).Value = retrySeconds;
+        cmd.Parameters.Add("@remoteId", SqlDbType.NVarChar, 200).Value = (object?)remoteShipmentId ?? DBNull.Value;
         return cmd.ExecuteNonQuery() == 1;
     }
 

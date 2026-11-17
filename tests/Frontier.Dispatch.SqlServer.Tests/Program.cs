@@ -103,14 +103,14 @@ try
     Check("Pending request claimable", firstClaim is not null && firstClaim.DispatchRequestId == requestId && firstClaim.AttemptCount == 1);
     Check("Claim correlates ERP departure", firstClaim?.SalesOrderId == ready && firstClaim?.WarehouseId == warehouse && firstClaim?.PackingId == "PACK");
     Check("Second worker cannot claim active lease", delivery.ClaimRequest(requestId, TimeSpan.FromMinutes(5)) is null);
-    Check("Wrong lease cannot acknowledge", !delivery.MarkAccepted(requestId, Guid.NewGuid()));
+    Check("Wrong lease cannot acknowledge", !delivery.MarkAccepted(requestId, Guid.NewGuid(), "R4M-WRONG"));
     Check("Wrong lease cannot retry", !delivery.MarkRetryableFailure(requestId,Guid.NewGuid(),"temporary",TimeSpan.Zero));
     Check("Retry schedules request", delivery.MarkRetryableFailure(requestId,firstClaim!.LeaseToken,"temporary",TimeSpan.Zero));
     Check("Retry retains stable request identity", Count("SELECT COUNT(*) FROM erp.DispatchIntent WHERE DispatchRequestId=@id AND Status='Pending' AND AttemptCount=1",("@id",requestId)) == 1);
     var secondClaim = delivery.ClaimRequest(requestId, TimeSpan.FromMinutes(5));
     Check("Retry can reclaim", secondClaim is not null && secondClaim.DispatchRequestId == requestId && secondClaim.AttemptCount == 2 && secondClaim.LeaseToken != firstClaim.LeaseToken);
-    Check("Old token cannot acknowledge new claim", !delivery.MarkAccepted(requestId,firstClaim.LeaseToken));
-    Check("Current token can accept", delivery.MarkAccepted(requestId,secondClaim!.LeaseToken));
+    Check("Old token cannot acknowledge new claim", !delivery.MarkAccepted(requestId,firstClaim.LeaseToken, "R4M-OLD"));
+    Check("Current token can accept", delivery.MarkAccepted(requestId,secondClaim!.LeaseToken, "R4M-TEST"));
     Check("Accepted request durable", Count("SELECT COUNT(*) FROM erp.DispatchIntent WHERE DispatchRequestId=@id AND Status='Accepted' AND AcceptedUtc IS NOT NULL AND LeaseToken IS NULL",("@id",requestId)) == 1);
     Check("Accepted request no longer claimable", delivery.ClaimRequest(requestId, TimeSpan.FromMinutes(5)) is null);
     Check("No duplicate request created", Count("SELECT COUNT(*) FROM erp.DispatchIntent WHERE DepartureId=@id",("@id","DEPART-R"+suffix)) == 1);
