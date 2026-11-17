@@ -81,7 +81,7 @@ public sealed class Route4MeV5Gateway : IRoute4MeDispatchGateway
             if (!response.IsSuccessStatusCode)
                 return new(RemoteDispatchState.Uncertain, Error: "Route4Me lookup HTTP " + (int)response.StatusCode);
             using var document = JsonDocument.Parse(await response.Content.ReadAsStreamAsync(cancellationToken));
-            return InterpretLookup(document.RootElement, dispatchRequestId);
+            return InterpretCompleteLookup(document.RootElement, dispatchRequestId);
         }
         catch (OperationCanceledException) when (cancellationToken.IsCancellationRequested) { throw; }
         catch (Exception ex) when (ex is HttpRequestException or JsonException or TaskCanceledException or InvalidOperationException)
@@ -99,6 +99,35 @@ public sealed class Route4MeV5Gateway : IRoute4MeDispatchGateway
             Error: "Live Route4Me order creation disabled until unique external correlation and recovery semantics are verified"));
     }
 
+    /// <summary>
+    /// Q25.5d4: Accept a v5 lookup only when its pagination metadata proves a complete
+    /// one-page result. Search is not a uniqueness guarantee, even for exact matches.
+    /// Missing, inconsistent or multi-page metadata is inconclusive; never submit based on it.
+    /// </summary>
+    public static RemoteDispatchResult InterpretCompleteLookup(JsonElement root, string dispatchRequestId)
+    {
+        ArgumentException.ThrowIfNullOrWhiteSpace(dispatchRequestId);
+        if (root.ValueKind != JsonValueKind.Object ||
+            !root.TryGetProperty("data", out var data) || data.ValueKind != JsonValueKind.Array ||
+            !root.TryGetProperty("meta", out var meta) || meta.ValueKind != JsonValueKind.Object ||
+            !TryInteger(meta, "current_page", out var currentPage) ||
+            !TryInteger(meta, "last_page", out var lastPage) ||
+            !TryInteger(meta, "total", out var total) ||
+            !TryInteger(meta, "per_page", out var perPage) ||
+            currentPage != 1 || lastPage != 1 || perPage <= 0 ||
+            total < 0 || total != data.GetArrayLength() || total > perPage)
+            return new(RemoteDispatchState.Uncertain,
+                Error: "Route4Me lookup pagination is absent, incomplete or inconsistent");
+        return InterpretLookup(root, dispatchRequestId);
+    }
+
+    private static bool TryInteger(JsonElement obj, string property, out int value)
+    {
+        value = default;
+        return obj.TryGetProperty(property, out var field) &&
+               field.ValueKind == JsonValueKind.Number && field.TryGetInt32(out value);
+    }
+
     /// <summary>Analyze an already retrieved v5 List Orders response; suitable for offline contract tests.</summary>
     public static RemoteDispatchResult InterpretLookup(JsonElement root, string dispatchRequestId)
     {
@@ -111,8 +140,16 @@ public sealed class Route4MeV5Gateway : IRoute4MeDispatchGateway
         {
             if (order.ValueKind != JsonValueKind.Object) continue;
             // Search matches are broad; accept only exact ERP correlation in returned fields.
-            bool exact = Matches(order, "external_connection_object_id", dispatchRequestId) ||
-                         Matches(order, "address_alias", dispatchRequestId);
+            // If both correlation fields are supplied, they must agree. A matching alias
+            // cannot override a contradictory external-system identifier (or vice versa).
+            bool hasExternal = TryCorrelation(order, "external_connection_object_id", out var external);
+            bool hasAlias = TryCorrelation(order, "address_alias", out var alias);
+            bool externalExact = hasExternal && string.Equals(external, dispatchRequestId, StringComparison.OrdinalIgnoreCase);
+            bool aliasExact = hasAlias && string.Equals(alias, dispatchRequestId, StringComparison.OrdinalIgnoreCase);
+            if ((externalExact || aliasExact) && hasExternal && hasAlias &&
+                !string.Equals(external, alias, StringComparison.OrdinalIgnoreCase))
+                return new(RemoteDispatchState.Uncertain, Error: "Route4Me order has conflicting ERP correlation fields");
+            bool exact = externalExact || aliasExact;
             if (!exact) continue;
             if (!order.TryGetProperty("order_id", out var id) ||
                 (id.ValueKind != JsonValueKind.Number && id.ValueKind != JsonValueKind.String))
@@ -130,7 +167,14 @@ public sealed class Route4MeV5Gateway : IRoute4MeDispatchGateway
             Error: "No exact match in Route4Me search; completeness and consistency not established");
     }
 
-    private static bool Matches(JsonElement obj, string property, string expected) =>
-        obj.TryGetProperty(property, out var value) && value.ValueKind == JsonValueKind.String &&
-        string.Equals(value.GetString(), expected, StringComparison.OrdinalIgnoreCase);
+    private static bool TryCorrelation(JsonElement obj, string property, out string? value)
+    {
+        value = null;
+        if (!obj.TryGetProperty(property, out var field) || field.ValueKind == JsonValueKind.Null)
+            return false;
+        if (field.ValueKind != JsonValueKind.String)
+            return false;
+        value = field.GetString();
+        return !string.IsNullOrWhiteSpace(value);
+    }
 }
