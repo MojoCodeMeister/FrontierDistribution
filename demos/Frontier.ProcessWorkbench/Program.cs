@@ -24,6 +24,8 @@ builder.Services.AddSqlProductIdentityResolver(connectionString);
 builder.Services.AddSqlOrderIntake(connectionString);
 builder.Services.AddSqlInventoryAvailability(connectionString);
 builder.Services.AddSqlPickPlanStore(connectionString);
+builder.Services.AddScoped(_ => new SqlPickConfirmationStore(connectionString));
+builder.Services.AddScoped(_ => new SqlPackingConfirmationStore(connectionString));
 builder.Services.AddScoped(_ => new SqlOrderCommitment(connectionString));
 builder.Services.AddSingleton<ConcurrentDictionary<Guid, DemoSession>>();
 var app = builder.Build();
@@ -123,6 +125,55 @@ app.MapPost("/api/session/{id:guid}/persist", (Guid id, ConcurrentDictionary<Gui
     return new($"Pick plan: {result.Status}", true);
 }));
 
+// Voxware: report actual picking against the persisted pick plan.
+app.MapPost("/api/session/{id:guid}/pick", (Guid id, ConcurrentDictionary<Guid, DemoSession> sessions,
+    SqlPickConfirmationStore store) => Execute(id, sessions, state =>
+{
+    if (!state.Persisted || state.Plan is null || state.Order is null)
+        return new("Persist a ready Voxware pick plan first", false);
+    if (state.Plan.Status != PickPlanStatus.Ready)
+        return new("Only ready pick plans may be confirmed", false);
+    var report = new PickConfirmation(state.ExternalReference + "-PICK", state.Order.SalesOrderId,
+        state.Plan.WarehouseId, state.Plan.Lines.Select(line => new PickedLine(line.ProductId, line.Quantity)).ToArray());
+    var result = store.Confirm(report);
+    state.Events.Add($"Voxware pick confirmation: {result.Status} — {result.Message}");
+    if (result.Status is not (PickExecutionStatus.Completed or PickExecutionStatus.AlreadyRecorded))
+        return new(result.Message, false);
+    state.Pick = result;
+    return new($"Voxware pick: {result.Status}", true);
+}));
+
+// Voxware: report packing against the completed pick. This does not move inventory.
+app.MapPost("/api/session/{id:guid}/pack", (Guid id, ConcurrentDictionary<Guid, DemoSession> sessions,
+    SqlPackingConfirmationStore store) => Execute(id, sessions, state =>
+{
+    if (state.Pick is null || state.Plan is null || state.Order is null ||
+        state.Pick.Status is not (PickExecutionStatus.Completed or PickExecutionStatus.AlreadyRecorded))
+        return new("Complete Voxware picking first", false);
+    var report = new PackingConfirmation(state.ExternalReference + "-PACK", state.Order.SalesOrderId,
+        state.Plan.WarehouseId, state.ExternalReference + "-PICK",
+        state.Plan.Lines.Select(line => new PackedLine(line.ProductId, line.Quantity)).ToArray());
+    var result = store.Confirm(report);
+    state.Events.Add($"Voxware packing confirmation: {result.Status} — {result.Message}");
+    if (result.Status is not (PackingStatus.ReadyForShipment or PackingStatus.AlreadyRecorded))
+        return new(result.Message, false);
+    state.Packing = result;
+    return new($"Voxware packing: {result.Status}", true);
+}));
+
+// Read-only ERP departure readiness. Packing alone is not physical departure evidence.
+// No inventory consumption, warehouse-departure attestation, or dispatch intent is created.
+app.MapGet("/api/session/{id:guid}/departure-readiness", (Guid id, ConcurrentDictionary<Guid, DemoSession> sessions) =>
+{
+    if (!sessions.TryGetValue(id, out var state)) return Results.NotFound(new { error = "Session not found" });
+    lock (state.Sync)
+    {
+        if (state.Order is null) return Results.BadRequest(new { error = "Receive an ERP order first" });
+        try { return Results.Ok(ReadDepartureReadiness(connectionString, state.Order.SalesOrderId)); }
+        catch (Exception e) { return Results.Problem(e.Message, statusCode: 500); }
+    }
+});
+
 app.MapPost("/api/session/{id:guid}/replay", (Guid id, ConcurrentDictionary<Guid, DemoSession> sessions,
     SqlOrderIntake intake, SqlPickPlanStore store) => Execute(id, sessions, state =>
 {
@@ -158,6 +209,11 @@ app.MapPost("/api/session/{id:guid}/cleanup", (Guid id, ConcurrentDictionary<Gui
         IF NOT EXISTS (SELECT 1 FROM erp.SalesOrder
             WHERE SalesOrderId=@id AND ExternalOrderId=@external AND SourceSystem='nopCommerce')
             THROW 50010, 'Demo order ownership does not match; cleanup refused', 1;
+        -- Remove dependent Voxware confirmations before their plan.
+        DELETE FROM voxware.PackingConfirmationLine WHERE SalesOrderId=@id;
+        DELETE FROM voxware.PackingConfirmation WHERE SalesOrderId=@id;
+        DELETE FROM voxware.PickConfirmationLine WHERE SalesOrderId=@id;
+        DELETE FROM voxware.PickConfirmation WHERE SalesOrderId=@id;
         DELETE FROM voxware.PickPlanLine WHERE SalesOrderId=@id;
         DELETE FROM voxware.PickPlan WHERE SalesOrderId=@id;
         DELETE FROM erp.StockReservation WHERE SalesOrderId=@id;
@@ -177,6 +233,8 @@ app.MapPost("/api/session/{id:guid}/cleanup", (Guid id, ConcurrentDictionary<Gui
     state.Atp = null;
     state.Plan = null;
     state.Persisted = false;
+    state.Pick = null;
+    state.Packing = null;
     state.CreatedBySession = false;
     return new("Demo records removed; seed records unchanged", true);
 }));
@@ -205,6 +263,7 @@ static object View(DemoSession s) => new
 {
     id = s.Id, reference = s.ExternalReference, order = s.Order,
     availability = s.Availability, commitment = s.Commitment, atp = s.Atp, plan = s.Plan, persisted = s.Persisted,
+    pick = s.Pick, packing = s.Packing,
     events = s.Events.ToArray()
 };
 
@@ -218,6 +277,10 @@ static object ReadRecords(string connectionString, string orderId)
     var commitments = new List<object>();
     var reservations = new List<object>();
     var planLines = new List<object>();
+    var picks = new List<object>();
+    var pickLines = new List<object>();
+    var packings = new List<object>();
+    var packingLines = new List<object>();
     using (var cmd = new SqlCommand("SELECT SalesOrderId, SourceSystem, ExternalOrderId, CustomerId, ShipToLocationId, Status FROM erp.SalesOrder WHERE SalesOrderId=@id", sql))
     {
         cmd.Parameters.Add("@id", SqlDbType.VarChar, 64).Value = orderId;
@@ -254,7 +317,59 @@ static object ReadRecords(string connectionString, string orderId)
         using var r = cmd.ExecuteReader();
         while (r.Read()) reservations.Add(new { warehouseId = r.GetString(0), productId = r.GetString(1), quantity = r.GetInt32(2) });
     }
-    return new { erp = new { orders, orderLines, commitments, reservations }, voxware = new { plans, planLines } };
+    // Read only the session order; each row belongs to Voxware's SQL schema.
+    void ReadConfirmation(string query, Action<SqlDataReader> add)
+    {
+        using var cmd = new SqlCommand(query, sql);
+        cmd.Parameters.Add("@id", SqlDbType.VarChar, 64).Value = orderId;
+        using var reader = cmd.ExecuteReader();
+        while (reader.Read()) add(reader);
+    }
+    ReadConfirmation("SELECT ConfirmationId, WarehouseId, Outcome FROM voxware.PickConfirmation WHERE SalesOrderId=@id",
+        r => picks.Add(new { confirmationId = r.GetString(0), warehouseId = r.GetString(1), outcome = r.GetString(2) }));
+    ReadConfirmation("SELECT ProductId, Quantity FROM voxware.PickConfirmationLine WHERE SalesOrderId=@id ORDER BY ProductId",
+        r => pickLines.Add(new { productId = r.GetString(0), quantity = r.GetInt32(1) }));
+    ReadConfirmation("SELECT PackingId, PickConfirmationId, WarehouseId, Outcome FROM voxware.PackingConfirmation WHERE SalesOrderId=@id",
+        r => packings.Add(new { packingId = r.GetString(0), pickConfirmationId = r.GetString(1), warehouseId = r.GetString(2), outcome = r.GetString(3) }));
+    ReadConfirmation("SELECT ProductId, Quantity FROM voxware.PackingConfirmationLine WHERE SalesOrderId=@id ORDER BY ProductId",
+        r => packingLines.Add(new { productId = r.GetString(0), quantity = r.GetInt32(1) }));
+    return new { erp = new { orders, orderLines, commitments, reservations },
+        voxware = new { plans, planLines, picks, pickLines, packings, packingLines } };
+}
+
+// Snapshot of existing ERP/Voxware evidence, not an authorization to depart.
+static object ReadDepartureReadiness(string cs, string salesOrderId)
+{
+    using var conn = new SqlConnection(cs);
+    conn.Open();
+    using var cmd = new SqlCommand("""
+        SELECT c.WarehouseId,
+            (SELECT COUNT(*) FROM voxware.PackingConfirmation p
+             WHERE p.SalesOrderId=c.SalesOrderId AND p.WarehouseId=c.WarehouseId
+               AND p.Outcome='ReadyForShipment') AS ReadyPackings,
+            (SELECT COUNT(*) FROM erp.StockReservation r WHERE r.SalesOrderId=c.SalesOrderId AND r.WarehouseId=c.WarehouseId) AS ReservationLines,
+            (SELECT COUNT(*) FROM erp.OrderCancellation x WHERE x.SalesOrderId=c.SalesOrderId) AS Cancellations,
+            (SELECT COUNT(*) FROM erp.FulfillmentConsumption f WHERE f.SalesOrderId=c.SalesOrderId) AS Consumptions,
+            (SELECT COUNT(*) FROM erp.WarehouseDeparture d WHERE d.SalesOrderId=c.SalesOrderId) AS Departures,
+            (SELECT COUNT(*) FROM erp.DispatchIntent di JOIN erp.WarehouseDeparture d ON d.DepartureId=di.DepartureId
+             WHERE d.SalesOrderId=c.SalesOrderId) AS DispatchIntents
+        FROM erp.OrderCommitment c WHERE c.SalesOrderId=@id;
+        """, conn);
+    cmd.Parameters.Add("@id", SqlDbType.VarChar, 64).Value = salesOrderId;
+    using var reader = cmd.ExecuteReader();
+    if (!reader.Read()) return new { salesOrderId, eligibleForAttestation = false, reason = "No ERP commitment" };
+    var warehouseId = reader.GetString(0);
+    var readyPackings = reader.GetInt32(1);
+    var reservations = reader.GetInt32(2);
+    var cancellations = reader.GetInt32(3);
+    var consumptions = reader.GetInt32(4);
+    var departures = reader.GetInt32(5);
+    var dispatchIntents = reader.GetInt32(6);
+    var eligible = readyPackings == 1 && reservations > 0 && cancellations == 0 && consumptions == 0 && departures == 0;
+    return new { salesOrderId, warehouseId, readyPackings, reservationLines = reservations,
+        cancellations, consumptions, departures, dispatchIntents, eligibleForAttestation = eligible,
+        reason = eligible ? "Packing and reservation evidence present; separate authorized physical departure attestation required" :
+            "ERP departure prerequisites incomplete or already consumed" };
 }
 
 // ERP ATP is a read-only observation, separate from physical on-hand and the atomic acceptance operation.
@@ -306,6 +421,8 @@ sealed class DemoSession(Guid id, string externalReference)
     public object? Atp { get; set; }
     public PickPlan? Plan { get; set; }
     public bool Persisted { get; set; }
+    public PickExecutionResult? Pick { get; set; }
+    public PackingResult? Packing { get; set; }
     public bool CreatedBySession { get; set; }
     public List<string> Events { get; } = new();
 }
