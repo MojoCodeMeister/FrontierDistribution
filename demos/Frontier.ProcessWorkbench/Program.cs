@@ -174,6 +174,19 @@ app.MapGet("/api/session/{id:guid}/departure-readiness", (Guid id, ConcurrentDic
     }
 });
 
+// Q25.8: read-only order progress from existing ERP and Voxware evidence.
+// This is a status observation, not a departure or delivery attestation.
+app.MapGet("/api/session/{id:guid}/status", (Guid id, ConcurrentDictionary<Guid, DemoSession> sessions) =>
+{
+    if (!sessions.TryGetValue(id, out var state)) return Results.NotFound(new { error = "Session not found" });
+    lock (state.Sync)
+    {
+        if (state.Order is null) return Results.BadRequest(new { error = "Receive an ERP order first" });
+        try { return Results.Ok(ReadOrderStatus(connectionString, state.Order.SalesOrderId)); }
+        catch (Exception e) { return Results.Problem(e.Message, statusCode: 500); }
+    }
+});
+
 app.MapPost("/api/session/{id:guid}/replay", (Guid id, ConcurrentDictionary<Guid, DemoSession> sessions,
     SqlOrderIntake intake, SqlPickPlanStore store) => Execute(id, sessions, state =>
 {
@@ -335,6 +348,43 @@ static object ReadRecords(string connectionString, string orderId)
         r => packingLines.Add(new { productId = r.GetString(0), quantity = r.GetInt32(1) }));
     return new { erp = new { orders, orderLines, commitments, reservations },
         voxware = new { plans, planLines, picks, pickLines, packings, packingLines } };
+}
+
+// Cross-application read model only: ownership remains with ERP and Voxware.
+static object ReadOrderStatus(string cs, string salesOrderId)
+{
+    using var conn = new SqlConnection(cs);
+    conn.Open();
+    using var cmd = new SqlCommand("""
+        SELECT
+            CASE WHEN EXISTS (SELECT 1 FROM erp.SalesOrder WHERE SalesOrderId=@id) THEN 1 ELSE 0 END,
+            CASE WHEN EXISTS (SELECT 1 FROM erp.OrderCommitment WHERE SalesOrderId=@id) THEN 1 ELSE 0 END,
+            CASE WHEN EXISTS (SELECT 1 FROM voxware.PickPlan WHERE SalesOrderId=@id) THEN 1 ELSE 0 END,
+            CASE WHEN EXISTS (SELECT 1 FROM voxware.PickConfirmation WHERE SalesOrderId=@id AND Outcome='Completed') THEN 1 ELSE 0 END,
+            CASE WHEN EXISTS (SELECT 1 FROM voxware.PackingConfirmation WHERE SalesOrderId=@id AND Outcome='ReadyForShipment') THEN 1 ELSE 0 END,
+            CASE WHEN EXISTS (SELECT 1 FROM erp.WarehouseDeparture WHERE SalesOrderId=@id) THEN 1 ELSE 0 END,
+            (SELECT TOP(1) di.Status FROM erp.DispatchIntent di
+             JOIN erp.WarehouseDeparture wd ON wd.DepartureId=di.DepartureId
+             WHERE wd.SalesOrderId=@id ORDER BY di.CreatedUtc DESC),
+            CASE WHEN EXISTS (SELECT 1 FROM erp.OrderCancellation WHERE SalesOrderId=@id) THEN 1 ELSE 0 END;
+        """, conn);
+    cmd.Parameters.Add("@id", SqlDbType.VarChar, 64).Value = salesOrderId;
+    using var reader = cmd.ExecuteReader();
+    if (!reader.Read() || reader.GetInt32(0) == 0)
+        return new { salesOrderId, stage = "NotFound", message = "ERP order not found" };
+    var committed = reader.GetInt32(1) == 1;
+    var planned = reader.GetInt32(2) == 1;
+    var picked = reader.GetInt32(3) == 1;
+    var packed = reader.GetInt32(4) == 1;
+    var departed = reader.GetInt32(5) == 1;
+    string? dispatchStatus = reader.IsDBNull(6) ? null : reader.GetString(6);
+    var cancelled = reader.GetInt32(7) == 1;
+    var stage = cancelled ? "Cancelled" : departed ? "Departed" : packed ? "Packed" :
+        picked ? "Picked" : planned ? "PickPlanned" : committed ? "Committed" : "Received";
+    return new { salesOrderId, stage, erp = new { committed, cancelled, departed, dispatchStatus },
+        voxware = new { planned, picked, packed },
+        deliveryConfirmed = false,
+        note = "Read-only operational summary; no actual Route4Me delivery outcome is asserted" };
 }
 
 // Snapshot of existing ERP/Voxware evidence, not an authorization to depart.
