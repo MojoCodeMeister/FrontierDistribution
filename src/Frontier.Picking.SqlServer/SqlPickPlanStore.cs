@@ -29,6 +29,20 @@ public sealed class SqlPickPlanStore
         using var connection = new SqlConnection(_connectionString);
         connection.Open();
         using var transaction = connection.BeginTransaction(IsolationLevel.ReadCommitted);
+        // Q25.10: ERP cancellation uses this same transactional gate. Take it before the
+        // Voxware gate so cancellation and admission cannot pass each other, and so
+        // both operations acquire locks in the same order (ERP -> Voxware).
+        using (var eligibilityGate = Cmd(connection, transaction, """
+            DECLARE @result int;
+            EXEC @result = sys.sp_getapplock
+                @Resource = N'Frontier.ERP.Stock.Commitment',
+                @LockMode = N'Exclusive', @LockOwner = N'Transaction', @LockTimeout = 15000;
+            SELECT @result;
+            """))
+        {
+            var result = (int)eligibilityGate.ExecuteScalar()!;
+            if (result < 0) throw new InvalidOperationException($"ERP eligibility lock failed: {result}");
+        }
         using (var locker = Cmd(connection, transaction, """
             DECLARE @result int;
             EXEC @result = sys.sp_getapplock
@@ -41,6 +55,19 @@ public sealed class SqlPickPlanStore
             if (result < 0) throw new InvalidOperationException($"Voxware pick-plan lock failed: {result}");
         }
 
+        // ERP owns cancellation; Voxware admission observes the published cancellation
+        // fact via the existing SQL integration contract, without changing ERP state.
+        using (var eligibility = Cmd(connection, transaction, """
+            SELECT COUNT(*) FROM erp.OrderCancellation WHERE SalesOrderId = @order;
+            """))
+        {
+            eligibility.Parameters.Add("@order", SqlDbType.VarChar, 64).Value = proposed.SalesOrderId;
+            if ((int)eligibility.ExecuteScalar()! > 0)
+            {
+                transaction.Commit();
+                return new(PickPlanStoreStatus.Rejected, null, "ERP order is cancelled; warehouse pick-plan admission denied");
+            }
+        }
         var existing = Load(connection, transaction, proposed.SalesOrderId, proposed.WarehouseId);
         if (existing is not null)
         {
